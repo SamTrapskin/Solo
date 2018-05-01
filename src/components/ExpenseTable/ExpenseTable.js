@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import '../../styles/main.css';
 
 import Nav from '../../components/Nav/Nav';
-
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
-
+// import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 
 const mapStateToProps = state => ({
   user: state.user,
@@ -43,6 +43,20 @@ class UserPage extends Component {
           >
             Log Out
           </button>
+        <table className='Awesome'>
+          <tbody>
+            <tr>
+              <th>Lame</th><th>Soo Lame</th><th>uggghh</th>
+            </tr>
+
+            <tr><td>Ummm</td></tr>
+
+
+          </tbody>
+        </table>
+         
+   
+
         </div>
       );
     }
@@ -51,7 +65,9 @@ class UserPage extends Component {
       <div>
         <Nav />
         { content }
-      </div>
+
+  
+       </div>
     );
   }
 }

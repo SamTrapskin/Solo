@@ -80,3 +80,20 @@ li a:hover {
     text-decoration: underline;
     color: #eee;
 }
+
+
+table {
+    width: 100%;
+    border: 1px solid black;
+}
+
+th {
+    height: 50px;
+    border: 1px solid black;
+}
+td {
+    border: 1px solid black;
+}
+h1 {
+    color: yellow;
+}
