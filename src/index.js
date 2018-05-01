@@ -4,8 +4,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
-
+import muiThemeable from 'material-ui/styles/muiThemeable'
 import reducer from './redux/reducers';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import App from './App';
 import rootSaga from './redux/sagas';
@@ -26,6 +27,9 @@ const store = createStore(
   preloadedState,
   applyMiddleware(...middlewares),
 );
+
+
+
 
 sagaMiddleware.run(rootSaga);
 

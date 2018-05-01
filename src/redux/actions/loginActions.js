@@ -7,6 +7,7 @@ export const LOGIN_ACTIONS = {
   LOGIN_FAILED_NO_CODE: 'LOGIN_FAILED_NO_CODE',
   INPUT_ERROR: 'INPUT_ERROR',
   LOGOUT: 'LOGOUT',
+  GET_USER_TABLES: 'GET_USER_TABLES'
 };
 
 export const clearError = () => ({
@@ -31,3 +32,7 @@ export function formError() {
     payload: 'Enter your username and password!',
   };
 }
+
+export const getTable = () => ({
+  
+})
