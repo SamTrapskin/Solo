@@ -9,8 +9,8 @@ import {
 import Header from './components/Header/Header';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
-import UserPage from './components/UserPage/UserPage';
-import InfoPage from './components/InfoPage/InfoPage';
+import ExpenseTable from './components/ExpenseTable/ExpenseTable';
+import MileageTable from './components/MileageTable/MileageTable';
 
 import './styles/main.css';
 
@@ -30,11 +30,11 @@ const App = () => (
         />
         <Route
           path="/user"
-          component={UserPage}
+          component={ExpenseTable}
         />
         <Route
           path="/info"
-          component={InfoPage}
+          component={MileageTable}
         />
         {/* OTHERWISE (no path!) */}
         <Route render={() => <h1>404</h1>} />
