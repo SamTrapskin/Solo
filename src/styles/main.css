@@ -1,3 +1,9 @@
+html {
+     
+      background-color: #5A5A5A;
+    
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
     
@@ -9,8 +15,8 @@ body {
 }
 
 .instructions {
-    background-color: #5A5A5A;
-    padding: 5px;
+    background-color: #424242;
+    padding: 15px;
     color: #ece7e7;
     width: 100%;
 }
