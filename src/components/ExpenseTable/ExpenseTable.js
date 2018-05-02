@@ -4,98 +4,118 @@ import '../../styles/main.css';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
-import TextField from 'material-ui/TextField';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import muiThemeable from 'material-ui/styles/muiThemeable';
 import { FormControl } from 'react-bootstrap';
-import {Button} from 'react-bootstrap';
-
-
+import { Button } from 'react-bootstrap';
 import moment from 'moment';
 
-      const style = {
-        margin: 12,
-      };
-      const mapStateToProps = (state) => ({
-        user: state.user
-      });
-  
-     
-  
+const mapStateToProps = (state) => ({
+	user: state.user,
+	reduxState: state
+});
 
-  class UserPage extends Component {
-    constructor(props, context) {
-      super(props, context);
-      this.state = {
-        hidden: true
-      };
-    }
-    componentDidMount() {
-      this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-    }
+class UserPage extends Component {
+	constructor(props) {
+		super(props);
 
-    componentDidUpdate() {
-      if (!this.props.user.isLoading && this.props.user.userName === null) {
-        this.props.history.push('home');
-      }
-    }
+		this.state = {
+			newExpense: ''
+		};
+	}
 
-    logout = () => {
-      this.props.dispatch(triggerLogout());
-      // this.props.history.push('home');
-    };
-   
+	componentDidMount() {
+		this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+		this.props.dispatch({type: 'GET_EXPENSE'})
+	}
 
-  
-    render() {
-      let content = null;
+	componentDidUpdate() {
+		if (!this.props.user.isLoading && this.props.user.userName === null) {
+			this.props.history.push('home');
+		}
+	}
+	// getExpenseInfo = () => {
+	//   axios.get('/api/expenses').then((response) => {
+	//     this.props.dispatch({
+	//       type: 'GET_EXPENSE',
+	//       payload: response.data
+	//     })
+	//   }).catch((error) => {
+	//       console.log('Error in get', error);
+	//   })
 
-      if (this.props.user.userName) {
-        content = (
-          <div>
-            <h1 id="welcome">Welcome, {this.props.user.userName}!</h1>
+	// }
 
-                <FormControl
-                  type="text"
-                  placeholder="Item"
-                  onChange={this.handleChange}
-                  />
-                  <FormControl
-                  type="number"
-                  placeholder="Item Price"
-                  onChange={this.handleChange}
-                  />
-                  <FormControl
-                  type="text"
-                  placeholder="Item link / notes"
-                  onChange={this.handleChange}
-                  />
-                  <p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
-                  <Button bsStyle="primary" bsSize="large" active>
-                  Add Item
-                  </Button>
-                       
-          
-            <button onClick={this.logout}>Log Out</button>
-            <table className="Awesome">
-              <tbody>
-                <tr>
-                  <th>Lame</th>
-                  <th>Soo Lame</th>
-                  <th>uggghh</th>
-                </tr>
+	logout = () => {
+		this.props.dispatch(triggerLogout());
+		// this.props.history.push('home');
+	};
+	handleChange = (event) => {
+		this.setState({
+			newExpense: event.target.value
+		});
+	};
 
-                <tr>
-                  <td>Ummm</td>
-                </tr>
-                <tr>
-                <td>hhhhhhhhunnnnv</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        );
-      }
+	handleClick = () => {
+    console.log('add expense', this.state)
+		this.props.dispatch({
+			type: 'ADD_EXPENSE',
+			payload: this.state
+		});
+	};
+
+	render() {
+		let content = null;
+		// let expenseList = this.props.getExpenseInfo.map((item) => {
+		//   return(<ExpenseList key={item.id} item={item} getExpenseInfo={this.getExpenseInfo}/>)
+		// })
+		if (this.props.user.userName) {
+			content = (
+				<div>
+					<h1 id="welcome">Welcome, {this.props.user.userName}!</h1>
+
+					{/* EXPENSE TABLE INPUTS */}
+
+					<FormControl
+						type="text"
+						placeholder="Item"
+						input
+						value={this.state.newExpense}
+						onChange={this.handleChange}
+					/>
+					<FormControl
+						type="number"
+						placeholder="Item Price"
+						input
+						value={this.state.newExpense}
+						onChange={this.handleChange}
+					/>
+					<FormControl type="text" placeholder="Item link / notes" onChange={this.handleChange} />
+					<p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
+					<Button onClick={this.handleClick} bsStyle="primary" bsSize="large" active>
+						Add Item
+					</Button>
+
+					{/* END EXPENSE TABLE INPUTS */}
+          {JSON.stringify(this.props.reduxState)}
+					<button onClick={this.logout}>Log Out</button>
+					<table className="Awesome">
+						<tbody>
+							<tr>
+								<th>Temporary header</th>
+								<th>Temporary header 2</th>
+								<th>Temporary header 3</th>
+							</tr>
+
+							<tr>
+								<td>{this.state.addExpenseinfo}</td>
+							</tr>
+							<tr>
+								<td>{JSON.stringify(this.props.reduxState)}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			);
+		}
 
 		return (
 			<div>
@@ -104,11 +124,7 @@ import moment from 'moment';
 			</div>
 		);
 	}
- }
+}
 
 // this allows us to use <App /> in index.js
 export default connect(mapStateToProps)(UserPage);
-
-
-
-

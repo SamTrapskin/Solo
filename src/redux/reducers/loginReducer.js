@@ -26,8 +26,18 @@ const isLoading = (state = false, action) => {
       return state;
   }
 };
+// const expenseReducer = (state = {}, action) => {
+//   switch (action.type) {
+//     case 'FETCH_EXPENSES':
+//       return action.payload;
+//       default:
+//         return state;
+//   }
+// }
+
 
 export default combineReducers({
   isLoading,
   message,
+  
 });
