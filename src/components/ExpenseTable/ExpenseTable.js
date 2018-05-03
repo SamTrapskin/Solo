@@ -7,6 +7,9 @@ import { triggerLogout } from '../../redux/actions/loginActions';
 import { FormControl } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn,} 
+from 'material-ui/Table';
+//
 
 const mapStateToProps = (state) => ({
 	user: state.user,
@@ -18,13 +21,17 @@ class UserPage extends Component {
 		super(props);
 
 		this.state = {
-			newExpense: ''
+			getExpense: [],
 		};
-	}
-
+	 }
+ 
 	componentDidMount() {
 		this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-		this.props.dispatch({type: 'GET_EXPENSE'})
+    this.props.dispatch({type: 'GET_EXPENSE'})
+  //on page load, GET_EXPENSE is 
+  //SENT TO expenseSaga which then
+  //goes to getExpenseReducer and appended to the 
+  //DOM
 	}
 
 	componentDidUpdate() {
@@ -32,17 +39,7 @@ class UserPage extends Component {
 			this.props.history.push('home');
 		}
 	}
-	// getExpenseInfo = () => {
-	//   axios.get('/api/expenses').then((response) => {
-	//     this.props.dispatch({
-	//       type: 'GET_EXPENSE',
-	//       payload: response.data
-	//     })
-	//   }).catch((error) => {
-	//       console.log('Error in get', error);
-	//   })
-
-	// }
+	
 
 	logout = () => {
 		this.props.dispatch(triggerLogout());
@@ -50,7 +47,8 @@ class UserPage extends Component {
 	};
 	handleChange = (event) => {
 		this.setState({
-			newExpense: event.target.value
+      getExpense: event.target.value
+      
 		});
 	};
 
@@ -62,11 +60,27 @@ class UserPage extends Component {
 		});
 	};
 
+  clickHandler = () =>{
+    this.deleteItem();
+  };
+
+
+
+
+
 	render() {
-		let content = null;
-		// let expenseList = this.props.getExpenseInfo.map((item) => {
-		//   return(<ExpenseList key={item.id} item={item} getExpenseInfo={this.getExpenseInfo}/>)
-		// })
+    console.log('HEY-oooo', this.state)
+		// let getExpense = this.props.getExpense.map((item) => {
+    //   return (
+    //     <div key={item.item_description}>{item.purchase_date}{item.price}{item.item_link}</div>
+    //   )
+    // });
+		// let expenseList = this.props.getExpense.map((item) => {
+		//   return(<getExpense key={item.id} item={item} getExpenseInfo={this.getExpenseInfo}/>)
+    // })
+    
+    let content = null;
+
 		if (this.props.user.userName) {
 			content = (
 				<div>
@@ -74,30 +88,28 @@ class UserPage extends Component {
 
 					{/* EXPENSE TABLE INPUTS */}
 
-					<FormControl
+					{/* <FormControl
 						type="text"
 						placeholder="Item"
 						input
-						value={this.state.newExpense}
+						value={this.state.newDescription}
 						onChange={this.handleChange}
-					/>
-					<FormControl
-						type="number"
-						placeholder="Item Price"
-						input
-						value={this.state.newExpense}
-						onChange={this.handleChange}
-					/>
-					<FormControl type="text" placeholder="Item link / notes" onChange={this.handleChange} />
+					/> */}
+					
+          <input type='text' placeholder= "Item Description" onChange={this.handleChange}/>
+
 					<p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
+
 					<Button onClick={this.handleClick} bsStyle="primary" bsSize="large" active>
 						Add Item
 					</Button>
 
 					{/* END EXPENSE TABLE INPUTS */}
-          {JSON.stringify(this.props.reduxState)}
+          {/* {JSON.stringify(this.props.reduxState)} */}
+       
 					<button onClick={this.logout}>Log Out</button>
-					<table className="Awesome">
+          <button onClick={this.clickHandler}>DELETE</button>
+					 <table className="Awesome">
 						<tbody>
 							<tr>
 								<th>Temporary header</th>
@@ -106,13 +118,13 @@ class UserPage extends Component {
 							</tr>
 
 							<tr>
-								<td>{this.state.addExpenseinfo}</td>
+								 {/* {this.state.getExpense} */}
 							</tr>
 							<tr>
-								<td>{JSON.stringify(this.props.reduxState)}</td>
+								{JSON.stringify(this.props.reduxState)}
 							</tr>
 						</tbody>
-					</table>
+					</table> 
 				</div>
 			);
 		}

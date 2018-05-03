@@ -1,7 +1,6 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const expenseList = [];
 
 /**
  * GET route template
@@ -43,4 +42,26 @@ router.post('/', (req, res, next) => {
 	}
 });
 
+
+router.delete('/:id', (req, res) => {
+    const queryText = `DELETE FROM items WHERE id=$1`;
+    pool.query(queryText, [req.query.id])
+    .then(() => {res.sendStatus(200);
+    }).catch((err) => {
+        console.log('Error completing SELECT plany query', err);
+        res.sendStatus(500);
+    });
+});
+
 module.exports = router;
+
+
+// router.delete('/', (req, res) => {
+//     const queryText = 'DELETE FROM plant WHERE id=$1';
+//     pool.query(queryText, [req.query.id])
+//       .then(() => { res.sendStatus(200); })
+//       .catch((err) => {
+//         console.log('Error completing SELECT plant query', err);
+//         res.sendStatus(500);
+//       });
+//   });
