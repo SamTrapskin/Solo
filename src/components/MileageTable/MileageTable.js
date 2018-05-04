@@ -7,13 +7,6 @@ import ReactTable from "react-table";
 import 'react-table/react-table.css'
 import { Button } from 'react-bootstrap';
 
-
-
-const mapStateToProps = state => ({
-  user: state.user,
-  reduxState: state.getMileage
-});
-
 class InfoPage extends Component {
 
   constructor(props) {
@@ -48,8 +41,6 @@ class InfoPage extends Component {
 		});
 	};
 
-
-
   render() {
     console.log('mileage render', this.state)
     let content = null;
@@ -58,6 +49,17 @@ class InfoPage extends Component {
     // })
 
     if (this.props.user.userName) {
+      const tableRows = this.props.reduxState.map(row => {
+        const {description, address, travel_date, total_miles} = row;
+        return (<tr>
+                  <td>{description}</td>
+                  <td>{address}</td>
+                  <td>{travel_date}</td>
+                  <td>{total_miles}</td>
+                </tr>
+                );
+      });
+
       content = (
         <div>
           <p>
@@ -77,14 +79,9 @@ class InfoPage extends Component {
               <th>Trip Address</th>
               <th>Date of Trip</th>
               <th>Total Miles</th>
-
             </tr>
 
-            <tr>
-            </tr>
-            <tr>
-              {JSON.stringify(this.props.reduxState)}
-            </tr>
+            {tableRows}
           </tbody>
         </table> 
         </div>
@@ -99,6 +96,11 @@ class InfoPage extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user,
+  reduxState: state.getMileage
+});
 
 // this allows us to use <App /> in index.js
 export default connect(mapStateToProps)(InfoPage);

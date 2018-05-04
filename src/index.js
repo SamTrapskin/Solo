@@ -9,6 +9,8 @@ import reducer from './redux/reducers';
 import App from './App';
 import rootSaga from './redux/sagas';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 // Initializing to an empty object, but here is where you could
 // preload your redux state with initial values (from localStorage, perhaps)
 const preloadedState = {};
@@ -32,8 +34,10 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <MuiThemeProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </MuiThemeProvider>,
   document.getElementById('react-root'),
 );

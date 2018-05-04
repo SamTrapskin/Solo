@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 		});
 });
 
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
 	console.log('POST Route');
 	console.log(req.body);
 	if (req.isAuthenticated()) {

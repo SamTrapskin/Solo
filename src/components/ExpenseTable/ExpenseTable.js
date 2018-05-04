@@ -4,18 +4,14 @@ import '../../styles/main.css';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
-import ExpenseTableRow from '../ExpenseTable/ExpenseTable';
+import ExpenseTableList from '../ExpenseTable/ExpenseTable';
 import { FormControl } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn,} 
 from 'material-ui/Table';
+import RaisedButton from 'material-ui/RaisedButton';
 //
-
-const mapStateToProps = (state) => ({
-	user: state.user,
-  reduxState: state.getExpense
-});
 
 class UserPage extends Component {
 	constructor(props) {
@@ -23,6 +19,8 @@ class UserPage extends Component {
     this.state= {
       getExpense: []
     }
+
+    this.clickHandler = this.clickHandler.bind(this);
   }
  
 	componentDidMount() {
@@ -59,19 +57,16 @@ class UserPage extends Component {
 		});
 	};
 
-  clickHandler = () =>{
+  clickHandler = () => {
     console.log('delete expense', this.state)
     this.props.dispatch({
       type:'DELETE_EXPENSE',
-// payload: req.params.id
-  }) 
+      payload: 1//req.params.id
+    });
   };
 
-
-
-
 	render() {
-    console.log('HEY-oooo')
+    console.log('HEY-oooo expense render')
     
 		// let getExpense = this.props.getExpense.map((item) => {
     //   return (
@@ -83,8 +78,21 @@ class UserPage extends Component {
     // })
     
     let content = null;
-
+    // let expenseTableList = this.props.data.map((item) => {
+    //   return(<ExpenseTableList key={item.id} item={item} data={this.data}/>)
+    // })
 		if (this.props.user.userName) {
+      const tableRows = this.props.reduxState.map(row => {
+        const {item_description, purchase_date, item_price, item_link} = row;
+        return (<tr>
+                  <td>{item_description}</td>
+                  <td>{purchase_date}</td>
+                  <td>{item_price}</td>
+                  <td>{item_link}</td>
+                </tr>
+                );
+      });
+
 			content = (
 				<div>
 					<h1 id="welcome">Welcome, {this.props.user.userName}!</h1>
@@ -101,8 +109,6 @@ class UserPage extends Component {
 					
           <input type='text' placeholder= "Item Description" onChange={this.handleChange}/>
 
-					
-
 					<Button onClick={this.handleClick} bsStyle="primary" bsSize="large" active>
 						Add Item
 					</Button>
@@ -113,8 +119,9 @@ class UserPage extends Component {
 					<button onClick={this.logout}>Log Out</button>
           <button onClick={this.clickHandler}>DELETE</button>
 
-          {ExpenseTableRow}
+          {ExpenseTableList}
 
+          <RaisedButton label="Secondary" secondary={true} style={{margin: 12}} />
 					 <table className="Awesome">
 						<tbody>
 							<tr>
@@ -124,12 +131,7 @@ class UserPage extends Component {
                 <th>Link to item</th>
 							</tr>
 
-							<tr>
-								 {/* {this.state.getExpense} */}
-							</tr>
-							<tr>
-								{JSON.stringify(this.props.reduxState)}
-							</tr>
+              {tableRows}
 						</tbody>
 					</table> 
 				</div>
@@ -144,6 +146,11 @@ class UserPage extends Component {
 		);
 	}
 }
+
+const mapStateToProps = (state) => ({
+	user: state.user,
+  reduxState: state.getExpense
+});
 
 // this allows us to use <App /> in index.js
 export default connect(mapStateToProps)(UserPage);
