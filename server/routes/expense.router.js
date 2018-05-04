@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
  * POST route template
  */
 
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
 	console.log('POST Route');
 	console.log(req.body);
 	if (req.isAuthenticated()) {
@@ -44,6 +44,7 @@ router.post('/', (req, res, next) => {
 
 
 router.delete('/:id', (req, res) => {
+    console.log('in DELETE router', req.params.id)
     const queryText = `DELETE FROM items WHERE id=$1`;
     pool.query(queryText, [req.query.id])
     .then(() => {res.sendStatus(200);

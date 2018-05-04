@@ -6,12 +6,12 @@ const Nav = () => (
     <div>
       <ul>
         <li>
-          <Link to="/user">
+          <Link to="/expenses">
            Expense Table
           </Link>
         </li>
         <li>
-          <Link to="/info">
+          <Link to="/mileage">
             Mileage Table
           </Link>
         </li>

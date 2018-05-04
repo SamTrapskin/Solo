@@ -29,11 +29,11 @@ const App = () => (
           component={RegisterPage}
         />
         <Route
-          path="/user"
+          path="/expenses"
           component={ExpenseTable}
         />
         <Route
-          path="/info"
+          path="/mileage"
           component={MileageTable}
         />
         {/* OTHERWISE (no path!) */}

@@ -4,6 +4,7 @@ import '../../styles/main.css';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
+import ExpenseTableRow from '../ExpenseTable/ExpenseTable';
 import { FormControl } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import moment from 'moment';
@@ -13,17 +14,16 @@ from 'material-ui/Table';
 
 const mapStateToProps = (state) => ({
 	user: state.user,
-	reduxState: state
+  reduxState: state.getExpense
 });
 
 class UserPage extends Component {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			getExpense: [],
-		};
-	 }
+    this.state= {
+      getExpense: []
+    }
+  }
  
 	componentDidMount() {
 		this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
@@ -40,7 +40,6 @@ class UserPage extends Component {
 		}
 	}
 	
-
 	logout = () => {
 		this.props.dispatch(triggerLogout());
 		// this.props.history.push('home');
@@ -61,15 +60,19 @@ class UserPage extends Component {
 	};
 
   clickHandler = () =>{
-    this.deleteItem();
+    console.log('delete expense', this.state)
+    this.props.dispatch({
+      type:'DELETE_EXPENSE',
+// payload: req.params.id
+  }) 
   };
 
 
 
 
-
 	render() {
-    console.log('HEY-oooo', this.state)
+    console.log('HEY-oooo')
+    
 		// let getExpense = this.props.getExpense.map((item) => {
     //   return (
     //     <div key={item.item_description}>{item.purchase_date}{item.price}{item.item_link}</div>
@@ -98,7 +101,7 @@ class UserPage extends Component {
 					
           <input type='text' placeholder= "Item Description" onChange={this.handleChange}/>
 
-					<p>{moment().format('MMMM Do YYYY, h:mm:ss a')}</p>
+					
 
 					<Button onClick={this.handleClick} bsStyle="primary" bsSize="large" active>
 						Add Item
@@ -109,12 +112,16 @@ class UserPage extends Component {
        
 					<button onClick={this.logout}>Log Out</button>
           <button onClick={this.clickHandler}>DELETE</button>
+
+          {ExpenseTableRow}
+
 					 <table className="Awesome">
 						<tbody>
 							<tr>
-								<th>Temporary header</th>
-								<th>Temporary header 2</th>
-								<th>Temporary header 3</th>
+								<th>Item Description</th>
+								<th>Date of purchase</th>
+								<th>Item Price</th>
+                <th>Link to item</th>
 							</tr>
 
 							<tr>

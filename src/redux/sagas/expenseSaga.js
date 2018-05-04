@@ -27,7 +27,7 @@ function* addExpenseInfo(action){
 function* deleteExpenseInfo(action){
     console.log('DELETE expense saga triggered', action)
         try{
-            yield call(axios.delete, '/api/:id', action.payload);
+            yield call(axios.delete, '/api/expense', action.payload);
             yield delete({
                 type:'DELETE_EXPENSE',
             })
