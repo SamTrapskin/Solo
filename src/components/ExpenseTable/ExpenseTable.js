@@ -5,31 +5,41 @@ import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import ExpenseTableList from '../ExpenseTable/ExpenseTable';
-import { FormControl } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
 import moment from 'moment';
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn,} 
-from 'material-ui/Table';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-//
+import TextField from 'material-ui/TextField';
+import PropTypes from 'prop-types';
+
+
+const style = {
+  margin: 12,
+};
+
+
+const mapStateToProps = (state) => ({
+	user: state.user,
+	reduxState: state.getExpense
+});
+
 
 class UserPage extends Component {
 	constructor(props) {
 		super(props);
-    this.state= {
-      getExpense: []
-    }
 
-    this.clickHandler = this.clickHandler.bind(this);
-  }
- 
+		// this.state = {
+		// 	getExpense: []
+		// };
+		// this.clickHandler = this.clickHandler.bind(this);
+	}
+
 	componentDidMount() {
 		this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
-    this.props.dispatch({type: 'GET_EXPENSE'})
-  //on page load, GET_EXPENSE is 
-  //SENT TO expenseSaga which then
-  //goes to getExpenseReducer and appended to the 
-  //DOM
+		this.props.dispatch({ type: 'GET_EXPENSE' });
+		//on page load, GET_EXPENSE is
+		//SENT TO expenseSaga which then
+		//goes to getExpenseReducer and appended to the
+		//DOM
 	}
 
 	componentDidUpdate() {
@@ -37,109 +47,92 @@ class UserPage extends Component {
 			this.props.history.push('home');
 		}
 	}
-	
+
 	logout = () => {
 		this.props.dispatch(triggerLogout());
 		// this.props.history.push('home');
 	};
-	handleChange = (event) => {
-		this.setState({
-      getExpense: event.target.value
-      
-		});
+
+	handleChange = (name) => {
+		return (event) => {
+			this.setState({
+				[name]: event.target.value
+			});
+		};
 	};
 
 	handleClick = () => {
-    console.log('add expense', this.state)
+		console.log('add expense', this.state);
 		this.props.dispatch({
 			type: 'ADD_EXPENSE',
 			payload: this.state
 		});
 	};
 
-  clickHandler = () => {
-    console.log('delete expense', this.state)
-    this.props.dispatch({
-      type:'DELETE_EXPENSE',
-      payload: 1//req.params.id
-    });
-  };
-
+	clickHandler = () => {
+		console.log('delete expense', this.state);
+		this.props.dispatch({
+			type: 'DELETE_EXPENSE',
+			payload: 1 //req.params.id
+		});
+	};
 	render() {
-    console.log('HEY-oooo expense render')
-    
-		// let getExpense = this.props.getExpense.map((item) => {
-    //   return (
-    //     <div key={item.item_description}>{item.purchase_date}{item.price}{item.item_link}</div>
-    //   )
-    // });
-		// let expenseList = this.props.getExpense.map((item) => {
-		//   return(<getExpense key={item.id} item={item} getExpenseInfo={this.getExpenseInfo}/>)
-    // })
-    
-    let content = null;
-    // let expenseTableList = this.props.data.map((item) => {
-    //   return(<ExpenseTableList key={item.id} item={item} data={this.data}/>)
-    // })
+		console.log('HEY-oooo expense render', this.state);
+
+		let content = null;
+
 		if (this.props.user.userName) {
-      const tableRows = this.props.reduxState.map(row => {
-        const {item_description, purchase_date, item_price, item_link} = row;
-        return (<tr>
-                  <td>{item_description}</td>
-                  <td>{purchase_date}</td>
-                  <td>{item_price}</td>
-                  <td>{item_link}</td>
-                </tr>
-                );
-      });
+			const tableRows = this.props.reduxState.map((row) => {
+				const { item_description, purchase_date, item_price, item_link } = row;
+				return (
+					<tr>
+						<td>{item_description}</td>
+						<td>{purchase_date}</td>
+						<td>{item_price}</td>
+						<td>{item_link}</td>
+					</tr>
+				);
+			});
 
 			content = (
-				<div>
-					<h1 id="welcome">Welcome, {this.props.user.userName}!</h1>
+        
+            <div>
+                      
+         )
+         
+            
 
-					{/* EXPENSE TABLE INPUTS */}
+          <RaisedButton label="Primary" primary={true} style={style} onClick={this.handleClick}/>
+          
 
-					{/* <FormControl
-						type="text"
-						placeholder="Item"
-						input
-						value={this.state.newDescription}
-						onChange={this.handleChange}
-					/> */}
-					
-          <input type='text' placeholder= "Item Description" onChange={this.handleChange}/>
-
-					<Button onClick={this.handleClick} bsStyle="primary" bsSize="large" active>
-						Add Item
-					</Button>
-
-					{/* END EXPENSE TABLE INPUTS */}
-          {/* {JSON.stringify(this.props.reduxState)} */}
+				
+       
+  
+  
        
 					<button onClick={this.logout}>Log Out</button>
-          <button onClick={this.clickHandler}>DELETE</button>
+					<button onClick={this.clickHandler}>DELETE</button>
 
-          {ExpenseTableList}
-
-          <RaisedButton label="Secondary" secondary={true} style={{margin: 12}} />
-					 <table className="Awesome">
+					<table className="Awesome">
 						<tbody>
 							<tr>
 								<th>Item Description</th>
 								<th>Date of purchase</th>
 								<th>Item Price</th>
-                <th>Link to item</th>
+								<th>Link to item</th>
 							</tr>
-
-              {tableRows}
+							{ExpenseTableList}
+							{tableRows}
 						</tbody>
-					</table> 
-				</div>
-			);
-		}
+					</table>
+        </div>
+      );
+    }
+  
 
 		return (
 			<div>
+
 				<Nav />
 				{content}
 			</div>
@@ -147,10 +140,6 @@ class UserPage extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	user: state.user,
-  reduxState: state.getExpense
-});
 
 // this allows us to use <App /> in index.js
 export default connect(mapStateToProps)(UserPage);

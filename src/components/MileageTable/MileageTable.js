@@ -4,8 +4,17 @@ import { connect } from 'react-redux';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import ReactTable from "react-table";
-import 'react-table/react-table.css'
-import { Button } from 'react-bootstrap';
+import 'react-table/react-table.css';
+
+import TextField from 'material-ui/TextField';
+
+const style = {
+	margin: 12
+};
+
+
+
+
 
 class InfoPage extends Component {
 
@@ -26,11 +35,12 @@ class InfoPage extends Component {
     }
   }
 
-  handleChange = (event) => {
-		this.setState({
-      getMileage: event.target.value
-      
-		});
+  handleChange = (name) => {
+		return (event) => {
+			this.setState({
+				[name]: event.target.value
+			});
+		};
 	};
 
   handleClick = () => {
@@ -51,7 +61,7 @@ class InfoPage extends Component {
     if (this.props.user.userName) {
       const tableRows = this.props.reduxState.map(row => {
         const {description, address, travel_date, total_miles} = row;
-        return (<tr>
+        return (<tr className="Awesome">
                   <td>{description}</td>
                   <td>{address}</td>
                   <td>{travel_date}</td>
@@ -62,16 +72,34 @@ class InfoPage extends Component {
 
       content = (
         <div>
-          <p>
-            MILEAGE Page
-          </p>
+        
+        {/* <TextField
+						hintText="Trip Description"
+						underlineFocusStyle={styles.underlineStyle}
+						onChange={this.handleChange('description')}
+					/>
+					<TextField
+						hintText="Client Address"
+						underlineFocusStyle={styles.underlineStyle}
+						onChange={this.handleChange('address')}
+					/>
+
+					
+					<TextField
+						hintText="Date of Travel"
+						underlineFocusStyle={styles.underlineStyle}
+						onChange={this.handleChange('travel_date')}
+					/>
+					<TextField
+						hintText="Total Miles"
+						underlineFocusStyle={styles.underlineStyle}
+						onChange={this.handleChange('total_miles')}
+					/>
         
       
-      <input type='text' placeholder= "Trip Description" onChange={this.handleChange}/>
+ */}
 
-      <Button onClick={this.handleClick} bsStyle="primary" bsSize="large" active>
-						Add Mileage
-					</Button>
+
           <table className="Awesome">
           <tbody>
             <tr>
@@ -90,6 +118,8 @@ class InfoPage extends Component {
         
     return (
       <div>
+          
+
         <Nav />
         { content }
       </div>

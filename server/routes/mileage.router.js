@@ -39,5 +39,15 @@ router.post('/', (req, res, next) => {
 	}
 });
 
+router.delete('/:id', (req, res) => {
+    console.log('in DELETE mileage router', req.params.id)
+    const queryText = `DELETE FROM mileage WHERE id=$1`;
+    pool.query(queryText, [req.query.id])
+    .then(() => {res.sendStatus(200);
+    }).catch((err) => {
+        console.log('Error completing SELECT plany query', err);
+        res.sendStatus(500);
+    });
+});
 
 module.exports = router;

@@ -14,7 +14,7 @@ function* getExpenseInfo(action){
     } catch (error) {}
 }
 
-function* addExpenseInfo(action){
+function* addExpenseInfo(action, name){
     console.log('POST expense saga triggered', action)
     try {
         yield call(axios.post, '/api/expense', action.payload);
