@@ -10,11 +10,16 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
+import { FormControl } from 'react-bootstrap';
+import DatePicker from 'material-ui/DatePicker';
+
+
 
 
 const style = {
   margin: 12,
 };
+
 
 
 const mapStateToProps = (state) => ({
@@ -27,6 +32,10 @@ class UserPage extends Component {
 	constructor(props) {
 		super(props);
 
+    this.state = {
+      controlledDate: null,
+    };
+  
 		// this.state = {
 		// 	getExpense: []
 		// };
@@ -56,11 +65,18 @@ class UserPage extends Component {
 	handleChange = (name) => {
 		return (event) => {
 			this.setState({
-				[name]: event.target.value
+        [name]: event.target.value,
 			});
 		};
-	};
-
+  };
+  handleDateChange = (date) => {
+    return (event => {
+      this.setState({
+        controlledDate: date,
+      });
+    });
+  };
+ 
 	handleClick = () => {
 		console.log('add expense', this.state);
 		this.props.dispatch({
@@ -78,10 +94,8 @@ class UserPage extends Component {
 	};
 	render() {
 		console.log('HEY-oooo expense render', this.state);
-
-		let content = null;
-
-		if (this.props.user.userName) {
+    let content = null;
+      if (this.props.user.userName) {
 			const tableRows = this.props.reduxState.map((row) => {
 				const { item_description, purchase_date, item_price, item_link } = row;
 				return (
@@ -91,27 +105,38 @@ class UserPage extends Component {
 						<td>{item_price}</td>
 						<td>{item_link}</td>
 					</tr>
-				);
+        )
 			});
-
-			content = (
+          
         
+          content = (
             <div>
                       
-         )
+        <form id="expenseForm">
+          <label for="fname">Item Description</label>
+          <input type="text" id="fname" name="fname" onChange={this.handleChange('item_description')}/>
+          
+          <br />
+          <DatePicker
+        hintText="Date of purchase"
+        value={this.state.controlledDate}
+        onChange={this.handleDateChange('controlledDate')}
+      />
+          <br />
+          <label for="lname">Item Link</label>
+          <input type="text" id="lname" name="lname" onChange={this.handleChange('item_price')}/>
+          <br />
+          <label for="lname">Item Price</label>
+          <input type="text" id="lname" name="lname" onChange={this.handleChange('item_Link')} />
+          <br />
+          <RaisedButton label="Add Expense" primary={true} style={style} onClick={this.handleClick}/>
+        </form>
+                  
+
          
             
 
-          <RaisedButton label="Primary" primary={true} style={style} onClick={this.handleClick}/>
-          
-
-				
-       
-  
-  
-       
-					<button onClick={this.logout}>Log Out</button>
-					<button onClick={this.clickHandler}>DELETE</button>
+      
 
 					<table className="Awesome">
 						<tbody>
@@ -124,8 +149,15 @@ class UserPage extends Component {
 							{ExpenseTableList}
 							{tableRows}
 						</tbody>
+            <tfoot>
+    <tr>
+      <th id="total" colspan="2">Total :</th>
+      <td>200</td>
+    </tr>
+   </tfoot>
 					</table>
         </div>
+       
       );
     }
   

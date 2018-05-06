@@ -22,9 +22,18 @@ const Nav = () => (
             Mileage Table
           </Link>
         </li>
+       <div id="navLogout">
+        <li onClick={this.logout}>
+          <Link to="/home" >
+          Log Out
+          </Link>
+        </li>
+        </div>
       </ul>
     </div>
   </div>
 );
 
 export default Nav;
+
+

@@ -12,7 +12,9 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
   
 }
-
+#navLogout {
+    float: right;
+}
 .instructions h1 {
   font-size: 24px;
   font-weight: 700;
@@ -70,6 +72,7 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  width: 100%;
 }
 
 li {
@@ -90,6 +93,15 @@ li a:hover {
   text-decoration: underline;
   color: #eee;
 }
+
+#navDelete {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    background-color: none;
+  
+  }
 
 
 table {
@@ -118,4 +130,11 @@ h1 {
 .Awesome{
   height: 10px;
   line-height: 25px;
+}
+#expenseForm {
+    float: left;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+
 }
