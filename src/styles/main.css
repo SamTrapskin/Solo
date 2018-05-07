@@ -1,49 +1,86 @@
 
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100%;
+
+}
 
 
 
+
+#expenseForm {
+    float: left;
+    background-color: #35ADCE;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right:10px;
+    padding: 0;
+    text-align: center;
+}
+
+#expSubmit {
+    margin-top: 30px;
+}
+form {
+    margin-top: 20px;
+    background-color: #35ADCE;
+    text-align: center;
+  
+  }
+  
 html {
      
     background-color: white;
-  
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+h1 {
+    color: yellow;
+    margin: 0;
+  }
   
-}
-#navLogout {
-    float: right;
-}
+
+input {
+    margin: 5px;
+    margin-bottom: 10px;
+  }
+  
+  input[type="submit"] {
+    margin: 10px;
+  }
+
 .instructions h1 {
   font-size: 24px;
   font-weight: 700;
 }
 
 .instructions {
-  background-color: #424242;
+  background-color: #222F3F;
   padding: 15px;
   color: #ece7e7;
   width: 100%;
 }
 
-form {
-  background-color: #dbd5d5;
-  width: 30%;
-  height: 250px;
-  margin: 20px auto;
-  padding: 25px;
-  border-radius: 2px;
-}
 
-input {
-  margin: 5px;
-  margin-bottom: 10px;
-}
 
-input[type="submit"] {
-  margin: 10px;
-}
+li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    text-decoration: underline;
+    color: #eee;
+  }
+
 
 .message {
   padding: 10px 0;
@@ -67,33 +104,6 @@ width: 100%;
 border-radius: 0px;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  width: 100%;
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-  text-decoration: underline;
-  color: #eee;
-}
-
 #navDelete {
     display: block;
     text-align: center;
@@ -103,38 +113,105 @@ li a:hover {
   
   }
 
+#navLogout {
+    float: right;
+}
+
+RaisedButton {
+    color: #00f19a;
+}
+
+.row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
 table {
-  width: 100%;
-  border: 1px solid black;
-  background-color: #f7f2e3;
+    border: 1px solid black;
+    background-color: #f7f2e3;
+    
   
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #00f19a;
+   
 
+  }
+  td {
+    font-weight: bold;
+
+  }
+  th {
+    border: 1px solid black;
+  }
+  .topnav {
+    background-color: black;
+    overflow: hidden;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #34e598;
-}
-
-th {
-  height: 50px;
-  border: 1px solid black;
-}
-td {
-  border: 1px solid black;
-}
-h1 {
-  color: yellow;
-}
-
-.Awesome{
-  height: 10px;
-  line-height: 25px;
-}
-#expenseForm {
+/* Style the links inside the navigation bar */
+.topnav a {
     float: left;
-    background-color: white;
-    margin: 0;
-    padding: 0;
-
+    display: block;
+    color: #00FE9C;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
 }
+
+/* Change the color of links on hover */
+.topnav a:hover {
+    background-color: lightgrey;
+    color: white;
+}
+.a.active {
+    background-color: lightgrey;
+    color: white;
+}
+/* Add an active class to highlight the current page */
+.active {
+    background-color: #00FE9C;
+    color: grey
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+    display: none;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width:100%;
+}
+
+
+
+
+
+
+.flex-grid {
+    display: flex;
+    justify-content: space-between;
+  }
+  .col-l {
+      width: 25%;
+    
+  }
+
+  .col-m {
+      margin-top: 20px;
+      width: 50%;
+  }
+
+.col-r {
+      width: 25%;
+      margin: 10px;
+  }
+
+

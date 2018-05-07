@@ -5,6 +5,10 @@ import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
+import DatePicker from 'material-ui/DatePicker';
+import RaisedButton from 'material-ui/RaisedButton';
+// import AsyncValidationTable from './AsyncValidationTable';
 
 import TextField from 'material-ui/TextField';
 
@@ -52,79 +56,111 @@ class InfoPage extends Component {
 	};
 
   render() {
+    // <AsyncValidationTable onSubmit={MileageTableList} />
     console.log('mileage render', this.state)
     let content = null;
     // let mileageItemList = this.state.getMileage.map((item) => {
     //   return(<MileageItemList key={item.description} item={item} getMileage={this.getMileage}/>)
     // })
+      const tableRows = this.props.reduxState.map(row => {
+      const {description, address, travel_date, total_miles} = row;
+      })
 
     if (this.props.user.userName) {
       const tableRows = this.props.reduxState.map(row => {
         const {description, address, travel_date, total_miles} = row;
-        return (<tr className="Awesome">
-                  <td>{description}</td>
-                  <td>{address}</td>
-                  <td>{travel_date}</td>
-                  <td>{total_miles}</td>
-                </tr>
-                );
-      });
+       
+      return (
+        <TableRow>
+        <TableRowColumn>{description}</TableRowColumn>
+        <TableRowColumn>{address}</TableRowColumn>
+        <TableRowColumn>{travel_date}</TableRowColumn>                     
+         <TableRowColumn>{total_miles}</TableRowColumn>
 
-      content = (
-        <div>
+      </TableRow>
+      )
+    })
         
-        {/* <TextField
-						hintText="Trip Description"
-						underlineFocusStyle={styles.underlineStyle}
-						onChange={this.handleChange('description')}
-					/>
-					<TextField
-						hintText="Client Address"
-						underlineFocusStyle={styles.underlineStyle}
-						onChange={this.handleChange('address')}
-					/>
+      content = (
+        <div className="column left">
+  <form id="expenseForm">
+          <label for="fname">Item Description</label>
+          <input type="text" id="fname" name="fname" onChange={this.handleChange('item_description')}/>
+          
+          <br />
+          
+          <br />
+          <label for="lname">Item Link</label>
+          <input type="text" id="lname" name="lname" onChange={this.handleChange('item_price')}/>
+          <br />
+          <label for="lname">Item Price</label>
+          <input type="text" id="lname" name="lname" onChange={this.handleChange('item_Link')} />
+          <br />
+          <RaisedButton label="Add Expense" primary={true} style={style} onClick={this.handleClick}/>
+        </form>
+        <br />
+         
+          
+          <Table className="column middle">
+                  <TableHeader>
+          <TableRow>
+        <TableHeaderColumn>Trip description</TableHeaderColumn>
+        <TableHeaderColumn>Trip Address</TableHeaderColumn>
+        <TableHeaderColumn>Date of travel</TableHeaderColumn>
+        <TableHeaderColumn>Total miles</TableHeaderColumn>
+
+          </TableRow>
+          </TableHeader>
+              
+                  <TableBody>
+                    
+                  
+							    {tableRows}
+              </TableBody>
+            </Table>
+          
+            
+            </div>
+     )
+    
+    
+      
+
+      
+        
+        //  <TextField
+				// 		hintText="Trip Description"
+				// 		underlineFocusStyle={styles.underlineStyle}
+				// 		onChange={this.handleChange('description')}
+				// 	/>
+				// 	<TextField
+				// 		hintText="Client Address"
+				// 		underlineFocusStyle={styles.underlineStyle}
+				// 		onChange={this.handleChange('address')}
+				// 	/>
 
 					
-					<TextField
-						hintText="Date of Travel"
-						underlineFocusStyle={styles.underlineStyle}
-						onChange={this.handleChange('travel_date')}
-					/>
-					<TextField
-						hintText="Total Miles"
-						underlineFocusStyle={styles.underlineStyle}
-						onChange={this.handleChange('total_miles')}
-					/>
-        
-      
- */}
-
-
-          <table className="Awesome">
-          <tbody>
-            <tr>
-              <th>Trip Description</th>
-              <th>Trip Address</th>
-              <th>Date of Trip</th>
-              <th>Total Miles</th>
-            </tr>
-
-            {tableRows}
-          </tbody>
-        </table> 
-        </div>
-      );
-    }
-        
+				// 	<TextField
+				// 		hintText="Date of Travel"
+				// 		underlineFocusStyle={styles.underlineStyle}
+				// 		onChange={this.handleChange('travel_date')}
+				// 	/>
+				// 	<TextField
+				// 		hintText="Total Miles"
+				// 		underlineFocusStyle={styles.underlineStyle}
+				// 		onChange={this.handleChange('total_miles')}
+				// 	/>
+                      
+                    
+  }        
+     
     return (
       <div>
-          
-
-        <Nav />
+          <Nav />
         { content }
       </div>
     );
-  }
+  }     
 }
 
 const mapStateToProps = state => ({

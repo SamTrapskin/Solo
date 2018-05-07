@@ -3,37 +3,21 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 // import Button from 'material-ui/Button';
-import Tabs, { Tab } from 'material-ui/Tabs';
-
 
 const Nav = () => (
 
-  <div className="navbar">
-    <div>
-      <ul>
-        <li>
-        <Link to="/expenses">
-           Expense Table
-          </Link>
-        </li>
-        
-        <li>
-          <Link to="/mileage">
-            Mileage Table
-          </Link>
-        </li>
-       <div id="navLogout">
-        <li onClick={this.logout}>
-          <Link to="/home" >
-          Log Out
-          </Link>
-        </li>
-        </div>
-      </ul>
-    </div>
-  </div>
+<div className="topnav" id="myTopnav">
+  <a className="topnav a.active" href="/home">Home</a>
+  <a className="topnav a.active" href="/expenses">Expenses</a>
+  <a className="topnav a.active" href="/mileage">Mileage</a>
+  <a className="topnav a.active" href="/home" id="navLogout">Log out</a>
+  <a className="topnav a.active" href="javascript:void(0);" class="icon" onClick="myFunction()">#00B0D1;</a>
+
+</div>
 );
 
 export default Nav;
+
+
 
 

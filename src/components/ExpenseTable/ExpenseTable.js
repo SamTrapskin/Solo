@@ -11,6 +11,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import { FormControl } from 'react-bootstrap';
+
 import DatePicker from 'material-ui/DatePicker';
 
 
@@ -18,6 +19,7 @@ import DatePicker from 'material-ui/DatePicker';
 
 const style = {
   margin: 12,
+  
 };
 
 
@@ -95,26 +97,27 @@ class UserPage extends Component {
 	render() {
 		console.log('HEY-oooo expense render', this.state);
     let content = null;
-      if (this.props.user.userName) {
-			const tableRows = this.props.reduxState.map((row) => {
-				const { item_description, purchase_date, item_price, item_link } = row;
+    if (this.props.user.userName) {
+      const tableRows = this.props.reduxState.map(row => {
+        const {item_description, purchase_date, item_price, item_link} = row;
 				return (
-					<tr>
-						<td>{item_description}</td>
-						<td>{purchase_date}</td>
-						<td>{item_price}</td>
-						<td>{item_link}</td>
-					</tr>
+          <TableRow>
+          <TableRowColumn>
+          <div onClick={(e) => {item_description}}></div>
+          </TableRowColumn>
+          <TableRowColumn>{purchase_date}</TableRowColumn>
+          <TableRowColumn>{item_price}</TableRowColumn>                     
+           <TableRowColumn>{item_link}</TableRowColumn>
+  
+        </TableRow>
         )
-			});
+      })
           
-        
           content = (
-            <div>
-                      
+            <div>       
         <form id="expenseForm">
-          <label for="fname">Item Description</label>
-          <input type="text" id="fname" name="fname" onChange={this.handleChange('item_description')}/>
+        <h2>Add a new expense</h2>
+          <input type="text" id="fname" name="fname" placeholder ="Item description" onChange={this.handleChange('item_description')}/>
           
           <br />
           <DatePicker
@@ -123,42 +126,51 @@ class UserPage extends Component {
         onChange={this.handleDateChange('controlledDate')}
       />
           <br />
-          <label for="lname">Item Link</label>
-          <input type="text" id="lname" name="lname" onChange={this.handleChange('item_price')}/>
+          <input type="text" id="lname" name="lname" placeholder ="Item price" onChange={this.handleChange('item_price')}/>
           <br />
-          <label for="lname">Item Price</label>
-          <input type="text" id="lname" name="lname" onChange={this.handleChange('item_Link')} />
+          <input type="text" id="lname" name="lname" placeholder ="Item link" onChange={this.handleChange('item_Link')} />
           <br />
-          <RaisedButton label="Add Expense" primary={true} style={style} onClick={this.handleClick}/>
-        </form>
-                  
-
-         
-            
-
-      
-
-					<table className="Awesome">
-						<tbody>
-							<tr>
-								<th>Item Description</th>
-								<th>Date of purchase</th>
-								<th>Item Price</th>
-								<th>Link to item</th>
-							</tr>
-							{ExpenseTableList}
-							{tableRows}
-						</tbody>
-            <tfoot>
-    <tr>
-      <th id="total" colspan="2">Total :</th>
-      <td>200</td>
-    </tr>
-   </tfoot>
-					</table>
-        </div>
+          <RaisedButton id='expSubmit' label="Submit Expense" primary={true} style={style} onClick={this.handleClick}/>
        
-      );
+       
+        <h1>Total:</h1>
+                 <br/> 
+                  <h3>$748.93</h3>
+                  </form>
+        
+                
+
+                
+                   
+              
+                     
+                      <Table>
+                              <TableHeader>
+                      <TableRow>
+                    <TableHeaderColumn>Item description</TableHeaderColumn>
+                    <TableHeaderColumn>Purchase Date</TableHeaderColumn>
+                    <TableHeaderColumn>Item Price</TableHeaderColumn>
+                    <TableHeaderColumn>Item Link</TableHeaderColumn>
+
+                      </TableRow>
+                      </TableHeader>
+                          
+                              <TableBody>
+                                
+                               
+                                {ExpenseTableList}
+							                  {tableRows}
+
+                          </TableBody>
+                        </Table>
+                        
+                       
+                       
+                 
+                  </div>
+               
+ 
+          )
     }
   
 
