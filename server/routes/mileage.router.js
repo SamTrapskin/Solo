@@ -24,9 +24,9 @@ router.post('/', (req, res, next) => {
 	console.log('POST Route');
 	console.log(req.body);
 	if (req.isAuthenticated()) {
-		const queryText = `INSERT INTO mileage ("description") VALUES ($1);`;
+		const queryText = 'INSERT INTO mileage ("description", "address", "total_miles") VALUES ($1, $2, $3);';
 		pool
-			.query(queryText, [ req.body.newMileage ])
+			.query(queryText, [req.body.description, req.body.address, req.body.total_miles ])
 			.then((result) => {
 				res.sendStatus(201);
 			})

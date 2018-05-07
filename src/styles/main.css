@@ -31,6 +31,7 @@ form {
 html {
      
     background-color: white;
+    width: 100%;
 }
 
 h1 {
@@ -98,6 +99,15 @@ li {
   background-color: #f8f8f8;
 }
 
+#mileageForm{
+    float: left;
+    background-color: #35ADCE;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right:10px;
+    padding: 0;
+    text-align: center;
+}
 .navbar {
 background-color: #5A5A5A;
 width: 100%;
@@ -135,7 +145,7 @@ table {
   }
   
   tbody tr:nth-child(even) {
-    background-color: #00f19a;
+    background-color: lightgrey;
    
 
   }

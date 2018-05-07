@@ -27,9 +27,9 @@ router.post('/', (req, res, next) => {
 	console.log('POST Route');
 	console.log(req.body);
 	if (req.isAuthenticated()) {
-		const queryText = `INSERT INTO items ("item_description") VALUES ($1);`;
+		const queryText = `INSERT INTO items ("item_description", "item_price", "item_link") VALUES ($1, $2, $3);`;
 		pool
-			.query(queryText, [ req.body.newExpense ])
+			.query(queryText, [ req.body.item_description, req.body.item_price, req.body.item_link])
 			.then((result) => {
 				res.sendStatus(201);
 			})
@@ -46,8 +46,8 @@ router.post('/', (req, res, next) => {
 router.delete('/:id', (req, res) => {
     console.log('in DELETE router', req.params.id)
     const queryText = `DELETE FROM items WHERE id=$1`;
-    pool.query(queryText, [req.query.id])
-    .then(() => {res.sendStatus(200);
+    pool.query(queryText, [req.params.id])
+    .then((result) => {res.sendStatus(200);
     }).catch((err) => {
         console.log('Error completing SELECT plany query', err);
         res.sendStatus(500);

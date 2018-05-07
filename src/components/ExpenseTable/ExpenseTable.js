@@ -34,14 +34,14 @@ class UserPage extends Component {
 	constructor(props) {
 		super(props);
 
-    this.state = {
-      controlledDate: null,
-    };
+    // this.state = {
+    //   controlledDate: null,
+    // };
   
-		// this.state = {
-		// 	getExpense: []
-		// };
-		// this.clickHandler = this.clickHandler.bind(this);
+	// 	this.state = {
+	// 		getExpense: []
+	// 	};
+	// 	this.clickHandler = this.clickHandler.bind(this);
 	}
 
 	componentDidMount() {
@@ -71,13 +71,13 @@ class UserPage extends Component {
 			});
 		};
   };
-  handleDateChange = (date) => {
-    return (event => {
-      this.setState({
-        controlledDate: date,
-      });
-    });
-  };
+  // handleDateChange = (date) => {
+  //   return (event => {
+  //     this.setState({
+  //       controlledDate: date,
+  //     });
+  //   });
+  // };
  
 	handleClick = () => {
 		console.log('add expense', this.state);
@@ -102,9 +102,7 @@ class UserPage extends Component {
         const {item_description, purchase_date, item_price, item_link} = row;
 				return (
           <TableRow>
-          <TableRowColumn>
-          <div onClick={(e) => {item_description}}></div>
-          </TableRowColumn>
+          <TableRowColumn>{item_description}</TableRowColumn>
           <TableRowColumn>{purchase_date}</TableRowColumn>
           <TableRowColumn>{item_price}</TableRowColumn>                     
            <TableRowColumn>{item_link}</TableRowColumn>
@@ -120,15 +118,15 @@ class UserPage extends Component {
           <input type="text" id="fname" name="fname" placeholder ="Item description" onChange={this.handleChange('item_description')}/>
           
           <br />
-          <DatePicker
+          {/* <DatePicker
         hintText="Date of purchase"
         value={this.state.controlledDate}
-        onChange={this.handleDateChange('controlledDate')}
-      />
+        onChange={this.handleDateChange('controlledDate')} */}
+      {/* /> */}
           <br />
           <input type="text" id="lname" name="lname" placeholder ="Item price" onChange={this.handleChange('item_price')}/>
           <br />
-          <input type="text" id="lname" name="lname" placeholder ="Item link" onChange={this.handleChange('item_Link')} />
+          <input type="text" id="lname" name="lname" placeholder ="Item link" onChange={this.handleChange('item_link')} />
           <br />
           <RaisedButton id='expSubmit' label="Submit Expense" primary={true} style={style} onClick={this.handleClick}/>
        

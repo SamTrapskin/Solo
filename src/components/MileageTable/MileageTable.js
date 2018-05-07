@@ -23,8 +23,11 @@ const style = {
 class InfoPage extends Component {
 
   constructor(props) {
-		super(props);
-
+    super(props);
+    
+  //   this.state = {
+  //     controlledDate: null,
+  //   };
   }
   
    componentDidMount() {
@@ -38,6 +41,13 @@ class InfoPage extends Component {
       this.props.history.push('home');
     }
   }
+  // handleDateChange = (date) => {
+  //   return (event => {
+  //     this.setState({
+  //       controlledDate: date,
+  //     });
+  //   });
+  // };
 
   handleChange = (name) => {
 		return (event) => {
@@ -63,7 +73,7 @@ class InfoPage extends Component {
     //   return(<MileageItemList key={item.description} item={item} getMileage={this.getMileage}/>)
     // })
       const tableRows = this.props.reduxState.map(row => {
-      const {description, address, travel_date, total_miles} = row;
+      const {description, address, total_miles} = row;
       })
 
     if (this.props.user.userName) {
@@ -82,25 +92,29 @@ class InfoPage extends Component {
     })
         
       content = (
-        <div className="column left">
-  <form id="expenseForm">
-          <label for="fname">Item Description</label>
-          <input type="text" id="fname" name="fname" onChange={this.handleChange('item_description')}/>
+        <div>       
+        <form id="mileageForm">
+        <h2>Add a new mileage</h2>
+          <input type="text" id="fname" name="fname" placeholder ="Trip description" onChange={this.handleChange('description')}/>
           
+          {/* <br />
+          <DatePicker
+        hintText="Travel date"
+         value={this.state.controlledDate}
+        onChange={this.handleDateChange('controlledDate')}
+      /> */}
           <br />
-          
+          <input type="text" id="lname" name="lname" placeholder ="Address" onChange={this.handleChange('address')}/>
           <br />
-          <label for="lname">Item Link</label>
-          <input type="text" id="lname" name="lname" onChange={this.handleChange('item_price')}/>
+          <input type="text" id="lname" name="lname" placeholder ="Total miles" onChange={this.handleChange('total_miles')} />
           <br />
-          <label for="lname">Item Price</label>
-          <input type="text" id="lname" name="lname" onChange={this.handleChange('item_Link')} />
-          <br />
-          <RaisedButton label="Add Expense" primary={true} style={style} onClick={this.handleClick}/>
-        </form>
-        <br />
-         
-          
+          <RaisedButton id='expSubmit' label="Submit Expense" primary={true} style={style} onClick={this.handleClick}/>
+       
+       
+        <h1>Total:</h1>
+                 <br/> 
+                  <h3>$748.93</h3>
+                  </form>
           <Table className="column middle">
                   <TableHeader>
           <TableRow>

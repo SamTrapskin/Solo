@@ -11,7 +11,7 @@ const Nav = () => (
   <a className="topnav a.active" href="/expenses">Expenses</a>
   <a className="topnav a.active" href="/mileage">Mileage</a>
   <a className="topnav a.active" href="/home" id="navLogout">Log out</a>
-  <a className="topnav a.active" href="javascript:void(0);" class="icon" onClick="myFunction()">#00B0D1;</a>
+  <a className="topnav a.active" href="javascript:void(0);" className="icon" onClick="myFunction()">#00B0D1;</a>
 
 </div>
 );
