@@ -22,7 +22,15 @@ function* addMileageInfo(action){
     } catch (error) {}
 }
 
-
+function* deleteMileageInfo(action){
+    console.log('DELETE expense saga triggered', action)
+        try{
+            yield call(axios.delete, '/api/mileage', action.payload);
+            yield put({
+                type:'DELETE_MILEAGE',
+            })
+        } catch (error) {}
+}
 
 
 
@@ -30,5 +38,6 @@ function* addMileageSaga() {
     // When GET_TOTALS is dispached, call the getUserInfo function
     yield takeEvery('GET_MILEAGE', getMileageInfo);
     yield takeEvery('ADD_MILEAGE', addMileageInfo);
+    yield takeEvery('DELETE_MILEAGE', deleteMileageInfo)
 }
 export default addMileageSaga;

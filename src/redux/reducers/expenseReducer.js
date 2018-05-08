@@ -16,5 +16,12 @@ function getExpenseReducer (state = [], action) {
           return state;
   }
 }
+function deleteExpenseReducer (state = [], action) {
+   if (action.type ==='DELETE_EXPENSE') {
+       console.log('Delete reducer')
+            return action.payload;
+        } return state;
+}
+
 
 export default addExpenseReducer;

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import MileageItemList from '/MileageTable';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import ReactTable from "react-table";
@@ -8,8 +7,6 @@ import 'react-table/react-table.css';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
-// import AsyncValidationTable from './AsyncValidationTable';
-
 import TextField from 'material-ui/TextField';
 
 const style = {
@@ -28,6 +25,7 @@ class InfoPage extends Component {
   //   this.state = {
   //     controlledDate: null,
   //   };
+  // }
   }
   
    componentDidMount() {
@@ -41,13 +39,13 @@ class InfoPage extends Component {
       this.props.history.push('home');
     }
   }
-  // handleDateChange = (date) => {
-  //   return (event => {
-  //     this.setState({
-  //       controlledDate: date,
-  //     });
-  //   });
-  // };
+  handleDateChange = (date) => {
+    return (event => {
+      this.setState({
+        controlledDate: date,
+      });
+    });
+  };
 
   handleChange = (name) => {
 		return (event) => {
@@ -69,16 +67,15 @@ class InfoPage extends Component {
     // <AsyncValidationTable onSubmit={MileageTableList} />
     console.log('mileage render', this.state)
     let content = null;
+    if (this.props.user.userName) {
+
     // let mileageItemList = this.state.getMileage.map((item) => {
     //   return(<MileageItemList key={item.description} item={item} getMileage={this.getMileage}/>)
     // })
       const tableRows = this.props.reduxState.map(row => {
-      const {description, address, total_miles} = row;
-      })
+      const {description, address, travel_date, total_miles} = row;
+   
 
-    if (this.props.user.userName) {
-      const tableRows = this.props.reduxState.map(row => {
-        const {description, address, travel_date, total_miles} = row;
        
       return (
         <TableRow>
@@ -88,8 +85,8 @@ class InfoPage extends Component {
          <TableRowColumn>{total_miles}</TableRowColumn>
 
       </TableRow>
-      )
-    })
+      );
+    });
         
       content = (
         <div>       
@@ -97,16 +94,16 @@ class InfoPage extends Component {
         <h2>Add a new mileage</h2>
           <input type="text" id="fname" name="fname" placeholder ="Trip description" onChange={this.handleChange('description')}/>
           
-          {/* <br />
+          <br />
           <DatePicker
         hintText="Travel date"
          value={this.state.controlledDate}
         onChange={this.handleDateChange('controlledDate')}
-      /> */}
+      />
           <br />
-          <input type="text" id="lname" name="lname" placeholder ="Address" onChange={this.handleChange('address')}/>
+          <input type="text" id="lname" name="lname" placeholder ="Address" onChange={this.handleChange('item_price')}/>
           <br />
-          <input type="text" id="lname" name="lname" placeholder ="Total miles" onChange={this.handleChange('total_miles')} />
+          <input type="text" id="lname" name="lname" placeholder ="Total miles" onChange={this.handleChange('item_Link')} />
           <br />
           <RaisedButton id='expSubmit' label="Submit Expense" primary={true} style={style} onClick={this.handleClick}/>
        
@@ -141,29 +138,7 @@ class InfoPage extends Component {
       
 
       
-        
-        //  <TextField
-				// 		hintText="Trip Description"
-				// 		underlineFocusStyle={styles.underlineStyle}
-				// 		onChange={this.handleChange('description')}
-				// 	/>
-				// 	<TextField
-				// 		hintText="Client Address"
-				// 		underlineFocusStyle={styles.underlineStyle}
-				// 		onChange={this.handleChange('address')}
-				// 	/>
-
-					
-				// 	<TextField
-				// 		hintText="Date of Travel"
-				// 		underlineFocusStyle={styles.underlineStyle}
-				// 		onChange={this.handleChange('travel_date')}
-				// 	/>
-				// 	<TextField
-				// 		hintText="Total Miles"
-				// 		underlineFocusStyle={styles.underlineStyle}
-				// 		onChange={this.handleChange('total_miles')}
-				// 	/>
+   
                       
                     
   }        

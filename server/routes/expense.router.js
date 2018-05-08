@@ -2,10 +2,9 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
-/**
- * GET route template
- */
-router.get('/', (req, res) => {
+		//GET ROUTE TO SERVER FOR EXPENSE TABLE//
+
+router.get('/', (req, res, next) => {
 	console.log('Expense Get route');
 	let queryText = `SELECT * FROM items;`;
 	pool
@@ -18,10 +17,10 @@ router.get('/', (req, res) => {
 			res.sendStatus(500);
 		});
 });
+			//END GET ROUTE//
 
-/**
- * POST route template
- */
+
+		//POST ROUTE TO SERVER FOR EXPENSE TABLE//
 
 router.post('/', (req, res, next) => {
 	console.log('POST Route');
@@ -41,28 +40,29 @@ router.post('/', (req, res, next) => {
 		res.sendStatus(403);
 	}
 });
+		//END POST ROUTE
 
 
-router.delete('/:id', (req, res) => {
-    console.log('in DELETE router', req.params.id)
-    const queryText = `DELETE FROM items WHERE id=$1`;
+
+		//DELETE ROUTE TO SERVER FOR EXPENSE TABLE//
+
+router.delete('/:id', function(req,res, next){
+	console.log(req.body)
+    let queryText = 'DELETE FROM "items" WHERE id=$1';
     pool.query(queryText, [req.params.id])
-    .then((result) => {res.sendStatus(200);
-    }).catch((err) => {
-        console.log('Error completing SELECT plany query', err);
-        res.sendStatus(500);
-    });
-});
+        .then((respose)=>{
+            res.sendStatus(200);
+        })
+        .catch((error)=>{
+            console.log('an error from the server in delete ', error);
+            res.sendStatus(500);
+        })
+})
+		//END DELETE ROUTE
+
+
+
 
 module.exports = router;
 
 
-// router.delete('/', (req, res) => {
-//     const queryText = 'DELETE FROM plant WHERE id=$1';
-//     pool.query(queryText, [req.query.id])
-//       .then(() => { res.sendStatus(200); })
-//       .catch((err) => {
-//         console.log('Error completing SELECT plant query', err);
-//         res.sendStatus(500);
-//       });
-//   });

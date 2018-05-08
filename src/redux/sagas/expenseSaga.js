@@ -27,9 +27,10 @@ function* addExpenseInfo(action, name){
 function* deleteExpenseInfo(action){
     console.log('DELETE expense saga triggered', action)
         try{
-            yield call(axios.delete, '/api/expense', action.payload);
-            yield delete({
-                type:'DELETE_EXPENSE',
+            yield call(axios.delete, '/api/expense/' + action.payload);
+            //
+            yield put({
+                type: 'GET_EXPENSE',
             })
         } catch (error) {}
 }
@@ -39,6 +40,8 @@ function* addExpenseSaga() {
     // When GET_TOTALS is dispached, call the getUserInfo function
     yield takeEvery('GET_EXPENSE', getExpenseInfo);
     yield takeEvery('ADD_EXPENSE', addExpenseInfo);
+    yield takeEvery('DELETE_EXPENSE', deleteExpenseInfo);
+
 }
 
 export default addExpenseSaga;

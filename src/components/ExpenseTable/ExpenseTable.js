@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../../styles/main.css';
+import logger from 'redux-logger';
+import axios from 'axios';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
@@ -11,46 +13,38 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import { FormControl } from 'react-bootstrap';
-
+import EditIcon from 'material-ui/svg-icons/image/edit';
+import TrashIcon from 'material-ui/svg-icons/action/delete';
 import DatePicker from 'material-ui/DatePicker';
 
-
-
-
+//STYLE VARIABLE BOR MATERIAL BUTTON
 const style = {
-  margin: 12,
-  
+	margin: 12
+	//
 };
-
-
 
 const mapStateToProps = (state) => ({
 	user: state.user,
 	reduxState: state.getExpense
 });
 
-
 class UserPage extends Component {
 	constructor(props) {
 		super(props);
 
-    // this.state = {
-    //   controlledDate: null,
-    // };
-  
-	// 	this.state = {
-	// 		getExpense: []
-	// 	};
-	// 	this.clickHandler = this.clickHandler.bind(this);
+		this.state = {
+			getExpense: []
+		};
 	}
 
+	//on page load, DISPATCH GET_EXPENSE is
+	//SENT TO expenseSaga which then
+	//goes to getExpenseReducer and appends EXPENSE_DATA to the
+	//DOM
 	componentDidMount() {
+		const { id } = this.props.match.params;
 		this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
 		this.props.dispatch({ type: 'GET_EXPENSE' });
-		//on page load, GET_EXPENSE is
-		//SENT TO expenseSaga which then
-		//goes to getExpenseReducer and appended to the
-		//DOM
 	}
 
 	componentDidUpdate() {
@@ -64,21 +58,16 @@ class UserPage extends Component {
 		// this.props.history.push('home');
 	};
 
+	//SETS STATE FOR ALL INPUTS
 	handleChange = (name) => {
 		return (event) => {
 			this.setState({
-        [name]: event.target.value,
+				[name]: event.target.value
 			});
 		};
-  };
-  // handleDateChange = (date) => {
-  //   return (event => {
-  //     this.setState({
-  //       controlledDate: date,
-  //     });
-  //   });
-  // };
- 
+	};
+
+	//SUBMIT BUTTON- TRIGGERS DISPATCH TO EXPENSE SAGA TO ADD DATA
 	handleClick = () => {
 		console.log('add expense', this.state);
 		this.props.dispatch({
@@ -87,101 +76,133 @@ class UserPage extends Component {
 		});
 	};
 
-	clickHandler = () => {
+	//TRASH ICON-TRIGGERS DISPATCH TO EXPENSE SAGA DELETE
+	handleClickRemove = (id) => {
 		console.log('delete expense', this.state);
 		this.props.dispatch({
 			type: 'DELETE_EXPENSE',
-			payload: 1 //req.params.id
+			payload: id
 		});
 	};
+
 	render() {
 		console.log('HEY-oooo expense render', this.state);
-    let content = null;
-    if (this.props.user.userName) {
-      const tableRows = this.props.reduxState.map(row => {
-        const {item_description, purchase_date, item_price, item_link} = row;
+		let content = null;
+		if (this.props.user.userName) {
+
+      //MAP OVER REDUX STATE.
+      
+const tableRows = this.props.reduxState.map((row) => {
+
+        //.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
+        
+				const { id, item_description, purchase_date, item_price, item_link } = row;
 				return (
-          <TableRow>
-          <TableRowColumn>{item_description}</TableRowColumn>
-          <TableRowColumn>{purchase_date}</TableRowColumn>
-          <TableRowColumn>{item_price}</TableRowColumn>                     
-           <TableRowColumn>{item_link}</TableRowColumn>
-  
-        </TableRow>
-        )
-      })
-          
-          content = (
-            <div>       
-        <form id="expenseForm">
-        <h2>Add a new expense</h2>
-          <input type="text" id="fname" name="fname" placeholder ="Item description" onChange={this.handleChange('item_description')}/>
-          
-          <br />
-          {/* <DatePicker
+					<TableRow selectable={false}>
+						{/* TABLE ROWS */}
+
+						<TableRowColumn>{item_description}</TableRowColumn>
+						<TableRowColumn>{purchase_date}</TableRowColumn>
+						<TableRowColumn>{item_price}</TableRowColumn>
+						<TableRowColumn>{item_link}</TableRowColumn>
+						<TableRowColumn><EditIcon /></TableRowColumn>
+            <TableRowColumn><TrashIcon onClick={() => {this.handleClickRemove(id);
+						}}/>
+						</TableRowColumn>
+					</TableRow>
+
+					// END TABLE ROWS
+				);
+			});
+
+			content = (
+				<div>
+					{/* FORM FOR ADDING EXPENSES(DATA) */}
+
+					<form id="expenseForm">
+						<h3>
+							Add a new <br />
+							expense
+						</h3>
+						<input
+							type="text"
+							id="fname"
+							name="fname"
+							placeholder="Item description"
+							onChange={this.handleChange('item_description')}
+						/>
+
+						<br />
+						{/* <DatePicker
         hintText="Date of purchase"
         value={this.state.controlledDate}
         onChange={this.handleDateChange('controlledDate')} */}
-      {/* /> */}
-          <br />
-          <input type="text" id="lname" name="lname" placeholder ="Item price" onChange={this.handleChange('item_price')}/>
-          <br />
-          <input type="text" id="lname" name="lname" placeholder ="Item link" onChange={this.handleChange('item_link')} />
-          <br />
-          <RaisedButton id='expSubmit' label="Submit Expense" primary={true} style={style} onClick={this.handleClick}/>
-       
-       
-        <h1>Total:</h1>
-                 <br/> 
-                  <h3>$748.93</h3>
-                  </form>
-        
-                
+						{/* /> */}
+						<br />
+						<input
+							type="text"
+							id="lname"
+							name="lname"
+							placeholder="Item price"
+							onChange={this.handleChange('item_price')}
+						/>
+						<br />
+						<input
+							type="text"
+							id="lname"
+							name="lname"
+							placeholder="Item link"
+							onChange={this.handleChange('item_link')}
+						/>
+						<br />
 
-                
-                   
-              
-                     
-                      <Table>
-                              <TableHeader>
-                      <TableRow>
-                    <TableHeaderColumn>Item description</TableHeaderColumn>
-                    <TableHeaderColumn>Purchase Date</TableHeaderColumn>
-                    <TableHeaderColumn>Item Price</TableHeaderColumn>
-                    <TableHeaderColumn>Item Link</TableHeaderColumn>
+						{/* END FORM */}
 
-                      </TableRow>
-                      </TableHeader>
-                          
-                              <TableBody>
-                                
-                               
-                                {ExpenseTableList}
-							                  {tableRows}
+						<RaisedButton
+							id="expSubmit"
+							label="Submit Expense"
+							primary={true}
+							style={style}
+							onClick={this.handleClick}
+						/>
+            {/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
 
-                          </TableBody>
-                        </Table>
-                        
-                       
-                       
-                 
-                  </div>
-               
- 
-          )
-    }
-  
+						<h1>Total:</h1>
+						<br />
+						<h3>$748.93</h3>
+					</form>
+
+
+          {/* TABLE HEADERS */}
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHeaderColumn>Item description</TableHeaderColumn>
+								<TableHeaderColumn>Purchase Date</TableHeaderColumn>
+								<TableHeaderColumn>Item Price</TableHeaderColumn>
+								<TableHeaderColumn>Item Link</TableHeaderColumn>
+								<TableHeaderColumn />
+								<TableHeaderColumn />
+							</TableRow>
+						</TableHeader>
+
+						<TableBody>
+							{ExpenseTableList}
+							{tableRows}
+						</TableBody>
+					</Table>
+				</div>
+			);
+		}
 
 		return (
 			<div>
-
 				<Nav />
 				{content}
 			</div>
 		);
 	}
 }
-
 
 // this allows us to use <App /> in index.js
 export default connect(mapStateToProps)(UserPage);

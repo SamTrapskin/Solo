@@ -12,6 +12,7 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import ExpenseTable from './components/ExpenseTable/ExpenseTable';
 import MileageTable from './components/MileageTable/MileageTable';
+import LandingPage from './components/LandingPage/LandingPage';
 
 import './styles/main.css';
 
@@ -22,9 +23,13 @@ const App = () => (
       <Switch>
         <Redirect exact from="/" to="/home" />
         <Route
-          path="/home"
+          path="/login"
           component={LoginPage}
-        />
+        /> 
+         <Route
+        path="/home"
+        component={LandingPage}
+      />
         <Route
           path="/register"
           component={RegisterPage}

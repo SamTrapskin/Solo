@@ -39,7 +39,7 @@ router.post('/', (req, res, next) => {
 	}
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id' , (req, res) => {
     console.log('in DELETE mileage router', req.params.id)
     const queryText = `DELETE FROM mileage WHERE id=$1`;
     pool.query(queryText, [req.query.id])
