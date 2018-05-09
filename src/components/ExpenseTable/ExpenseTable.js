@@ -1,13 +1,11 @@
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import '../../styles/main.css';
 import logger from 'redux-logger';
-import axios from 'axios';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
-import ExpenseTableList from '../ExpenseTable/ExpenseTable';
-import moment from 'moment';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -28,7 +26,7 @@ const mapStateToProps = (state) => ({
 	reduxState: state.getExpense
 });
 
-class UserPage extends Component {
+class ExpenseTable extends Component {
 	constructor(props) {
 		super(props);
 
@@ -187,7 +185,6 @@ const tableRows = this.props.reduxState.map((row) => {
 						</TableHeader>
 
 						<TableBody>
-							{ExpenseTableList}
 							{tableRows}
 						</TableBody>
 					</Table>
@@ -205,4 +202,4 @@ const tableRows = this.props.reduxState.map((row) => {
 }
 
 // this allows us to use <App /> in index.js
-export default connect(mapStateToProps)(UserPage);
+export default connect(mapStateToProps)(ExpenseTable);

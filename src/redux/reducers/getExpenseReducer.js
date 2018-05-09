@@ -5,6 +5,5 @@ function getExpenseReducer (state = [], action) {
         default:
             return state;
     }
-}
-
-export default getExpenseReducer;
+  }
+  export default getExpenseReducer;

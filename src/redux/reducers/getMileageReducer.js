@@ -5,6 +5,5 @@ function getMileageReducer (state = [], action) {
         default:
             return state;
     }
-}
-
-export default getMileageReducer;
+  }
+  export default getMileageReducer;

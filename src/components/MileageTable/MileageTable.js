@@ -8,27 +8,44 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import EditIcon from 'material-ui/svg-icons/image/edit';
+import TrashIcon from 'material-ui/svg-icons/action/delete';
+
+//STYLE VARIABLE BOR MATERIAL BUTTON
 
 const style = {
 	margin: 12
 };
 
 
+const mapStateToProps = state => ({
+  user: state.user,
+  reduxState: state.getMileage
+});
 
 
-
-class InfoPage extends Component {
+class MileageTable extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+			getMileage: []
+		};
+	}
     
   //   this.state = {
   //     controlledDate: null,
   //   };
   // }
-  }
   
+  
+  //on page load, DISPATCH GET_Mileage is
+	//dispatched TO mileageSaga which then
+	//goes to getMileageReducer and appends MILEAGE_DATA to the
+	//DOM
    componentDidMount() {
+    const { id } = this.props.match.params;
     this.props.dispatch({type: USER_ACTIONS.FETCH_USER});
     this.props.dispatch({type: 'GET_MILEAGE'})
 
@@ -39,6 +56,9 @@ class InfoPage extends Component {
       this.props.history.push('home');
     }
   }
+
+  	//SETS STATE FOR ALL INPUTS
+
   handleDateChange = (date) => {
     return (event => {
       this.setState({
@@ -46,6 +66,8 @@ class InfoPage extends Component {
       });
     });
   };
+
+	//SETS STATE FOR ALL INPUTS
 
   handleChange = (name) => {
 		return (event) => {
@@ -55,11 +77,21 @@ class InfoPage extends Component {
 		};
 	};
 
+    	//SUBMIT BUTTON- TRIGGERS DISPATCH TO EXPENSE SAGA TO ADD DATA
+
   handleClick = () => {
     console.log('add ... mileage', this.state)
 		this.props.dispatch({
 			type: 'ADD_MILEAGE',
 			payload: this.state
+		});
+  };
+  
+  handleClickRemove = (id) => {
+		console.log('delete mileage', this.state);
+		this.props.dispatch({
+			type: 'DELETE_MILEAGE',
+			payload: id
 		});
 	};
 
@@ -69,49 +101,63 @@ class InfoPage extends Component {
     let content = null;
     if (this.props.user.userName) {
 
-    // let mileageItemList = this.state.getMileage.map((item) => {
-    //   return(<MileageItemList key={item.description} item={item} getMileage={this.getMileage}/>)
-    // })
+      //MAP OVER REDUX STATE. 
       const tableRows = this.props.reduxState.map(row => {
-      const {description, address, travel_date, total_miles} = row;
-   
 
-       
+      //.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
+      const { id, description, address, travel_date, total_miles} = row;
       return (
-        <TableRow>
+        <TableRow selectable={false}>
+        {/* TABLE ROWS */}
+        
+        
         <TableRowColumn>{description}</TableRowColumn>
         <TableRowColumn>{address}</TableRowColumn>
         <TableRowColumn>{travel_date}</TableRowColumn>                     
          <TableRowColumn>{total_miles}</TableRowColumn>
-
+         <TableRowColumn><EditIcon /></TableRowColumn>
+         <TableRowColumn><TrashIcon onClick={() => {this.handleClickRemove(id);
+						}}/>
+      </TableRowColumn>
       </TableRow>
+
+       //END TABLE ROWS 
       );
     });
         
       content = (
-        <div>       
+        <div>   
+        {/* FORM FOR ADDING EXPENSES(DATA) */}
+    
         <form id="mileageForm">
         <h2>Add a new mileage</h2>
           <input type="text" id="fname" name="fname" placeholder ="Trip description" onChange={this.handleChange('description')}/>
           
           <br />
-          <DatePicker
+          {/* <DatePicker
         hintText="Travel date"
          value={this.state.controlledDate}
         onChange={this.handleDateChange('controlledDate')}
-      />
+      /> */}
           <br />
           <input type="text" id="lname" name="lname" placeholder ="Address" onChange={this.handleChange('item_price')}/>
           <br />
           <input type="text" id="lname" name="lname" placeholder ="Total miles" onChange={this.handleChange('item_Link')} />
           <br />
+
+        {/* END FORM */}
+
+
           <RaisedButton id='expSubmit' label="Submit Expense" primary={true} style={style} onClick={this.handleClick}/>
        
-       
-        <h1>Total:</h1>
+
+            {/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
+          <h1>Total:</h1>
                  <br/> 
                   <h3>$748.93</h3>
                   </form>
+
+          {/* TABLE HEADERS */}
           <Table className="column middle">
                   <TableHeader>
           <TableRow>
@@ -119,7 +165,8 @@ class InfoPage extends Component {
         <TableHeaderColumn>Trip Address</TableHeaderColumn>
         <TableHeaderColumn>Date of travel</TableHeaderColumn>
         <TableHeaderColumn>Total miles</TableHeaderColumn>
-
+        <TableHeaderColumn />
+				<TableHeaderColumn />
           </TableRow>
           </TableHeader>
               
@@ -133,15 +180,7 @@ class InfoPage extends Component {
             
             </div>
      )
-    
-    
-      
-
-      
-   
-                      
-                    
-  }        
+    }        
      
     return (
       <div>
@@ -152,10 +191,7 @@ class InfoPage extends Component {
   }     
 }
 
-const mapStateToProps = state => ({
-  user: state.user,
-  reduxState: state.getMileage
-});
+
 
 // this allows us to use <App /> in index.js
-export default connect(mapStateToProps)(InfoPage);
+export default connect(mapStateToProps)(MileageTable);

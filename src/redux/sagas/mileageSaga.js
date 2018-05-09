@@ -23,11 +23,11 @@ function* addMileageInfo(action){
 }
 
 function* deleteMileageInfo(action){
-    console.log('DELETE expense saga triggered', action)
+    console.log('DELETE MILEAGE saga triggered', action)
         try{
-            yield call(axios.delete, '/api/mileage', action.payload);
+            yield call(axios.delete, '/api/mileage/' + action.payload);
             yield put({
-                type:'DELETE_MILEAGE',
+                type:'GET_MILEAGE',
             })
         } catch (error) {}
 }
