@@ -60,7 +60,22 @@ router.delete('/:id', function(req,res, next){
 })
 		//END DELETE ROUTE
 
-
+router.put('/', (req, res) => {
+const updateExpese = req.body;
+const queryText = `UPDATE items SET "item_description" = $1, "purchase_date" = $2, "item_price" = $3, "item_link" = $4 WHERE id=$5;`;
+const queryValues = [
+			  updatedExpense.item_description,
+			  updatedExpense.purchase_date,
+			  updatedExpense.item_price,
+			  updatedExpense.item_link,
+			  ];
+pool.query(queryText, queryValues)
+	.then(() => { res.sendStatus(200); })
+		.catch((err) => {
+		console.log('Error completing SELECT items query', err);
+				res.sendStatus(500);
+			  });
+		  });
 
 
 module.exports = router;
