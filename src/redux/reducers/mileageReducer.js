@@ -21,6 +21,15 @@ function deleteMileageReducer (state = [], action) {
         } return state;
 }
 
+function updateMileageReducer (state = [], action) {
+    if (action.type === 'UPDATE_MILEAGE') {
+        console.log('Update reducer')
+            return action.payload;
+        }
+    }
+
+    
+
 
 
 export default addMileageReducer;

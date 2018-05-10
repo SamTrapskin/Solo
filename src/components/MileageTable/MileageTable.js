@@ -7,6 +7,9 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import RaisedButton from 'material-ui/RaisedButton';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import TrashIcon from 'material-ui/svg-icons/action/delete';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 //STYLE VARIABLE BOR MATERIAL BUTTON
 
@@ -26,10 +29,15 @@ class MileageTable extends Component {
       super(props);
 
       this.state = {
-        getMileage: []
-      };
+        open: false,
+        getMileage: [],
+        currentRow: {}
     }
-    
+
+  }
+    isSelected = (index) => {
+      return this.state.selected.indexOf(index) !== -1;
+    };
   //   this.state = {
   //     controlledDate: null,
   //   };
@@ -40,7 +48,28 @@ class MileageTable extends Component {
 	//dispatched TO mileageSaga which then
 	//goes to getMileageReducer and appends MILEAGE_DATA to the
 	//DOM
-   componentDidMount() {
+  
+  	//SETS STATE FOR ALL INPUTS
+
+  // handleDateChange = (date) => {
+  //   return (event => {
+  //     this.setState({
+  //       controlledDate: date,
+  //     });
+  //   });
+  // };
+
+
+
+  handleOpen = () => {
+		this.setState({ open: true });
+	};
+
+	handleClose = () => {
+		this.setState({ open: false });
+	};
+ 
+  componentDidMount() {
     const { id } = this.props.match.params;
     this.props.dispatch({type: USER_ACTIONS.FETCH_USER});
     this.props.dispatch({type: 'GET_MILEAGE'})
@@ -52,18 +81,12 @@ class MileageTable extends Component {
       this.props.history.push('home');
     }
   }
+  logout = () => {
+		this.props.dispatch(triggerLogout());
+		// this.props.history.push('home');
+	};
 
-  	//SETS STATE FOR ALL INPUTS
 
-  // handleDateChange = (date) => {
-  //   return (event => {
-  //     this.setState({
-  //       controlledDate: date,
-  //     });
-  //   });
-  // };
-
- 
   handleChange = (event, date) => {
 		this.setState({
 		  controlledDate: date,
@@ -99,6 +122,30 @@ class MileageTable extends Component {
 		});
   };
   
+  handleClickEdit = (event) => {
+		this.setState({
+			open: true,
+			currentRow: event,
+			editDescription: !this.state.editDescription
+		});
+		console.log('edit mileage', this.state);
+		this.props.dispatch({
+			type: 'EDIT_DESCR',
+			payload: this.state
+		});
+  };
+  
+  handleOnSubmit = () => {
+		console.log('update mileage', this.state);
+		
+
+		this.props.dispatch({
+			type: 'UPDATE_MILEAGE',
+			payload: this.state.currentRow
+		});
+
+		this.handleClose();
+	};
   
 
   render() {
@@ -106,6 +153,11 @@ class MileageTable extends Component {
     console.log('mileage render', this.state)
     let content = null;
     if (this.props.user.userName) {
+      const actions = [
+				<FlatButton label="Cancel" primary={true} onClick={this.handleClose} />,
+				<FlatButton label="Submit" primary={true} onClick={this.handleOnSubmit} />
+			];
+
 
       //MAP OVER REDUX STATE. 
       const tableRows = this.props.reduxState.map(row => {
@@ -113,7 +165,7 @@ class MileageTable extends Component {
       //.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
       const { id, description, address, travel_date, total_miles} = row;
       return (
-        <TableRow selectable={false}>
+        <TableRow selectable={false} key={id}>
         {/* TABLE ROWS */}
         
         
@@ -121,7 +173,14 @@ class MileageTable extends Component {
         <TableRowColumn>{address}</TableRowColumn>
         <TableRowColumn>{travel_date}</TableRowColumn>                     
          <TableRowColumn>{total_miles}</TableRowColumn>
-         <TableRowColumn><EditIcon /></TableRowColumn>
+         <TableRowColumn><EditIcon onClick={() => {
+                  this.handleClickEdit(row);
+                }}
+                
+              />
+         
+         
+         </TableRowColumn>
          <TableRowColumn><TrashIcon onClick={() => {this.handleClickRemove(id);
 						}}/>
       </TableRowColumn>
@@ -184,6 +243,57 @@ class MileageTable extends Component {
 							    {tableRows}
               </TableBody>
             </Table>
+
+					{/* //SECTION FOR UPDATING ITEMS// */}
+					<div>
+						<Dialog
+							title={`Change Mileage info for ${this.state.currentRow.description}???`}
+							actions={actions}
+							modal={true}
+							open={this.state.open}
+						>
+							<TextField
+								id="address"
+								value={this.state.currentRow.address}
+								onChange={(event) => {
+									this.setState({
+										currentRow: {
+											...this.state.currentRow,
+											address: event.target.value
+										}
+									});
+								}}
+								hintText="Address"
+							/>
+							<TextField
+                id="travel_date"
+								value={this.state.currentRow.travel_date}
+								onChange={(event) => {
+									this.setState({
+										currentRow: {
+											...this.state.currentRow,
+											purchase_date: event.target.value
+										}
+									});
+								}}
+								hintText="Travel Date"
+							/>
+							<TextField
+								id="total_miles"
+								value={this.state.currentRow.total_miles}
+								onChange={(event) => {
+									this.setState({
+										currentRow: {
+											...this.state.currentRow,
+											total_miles: event.target.value
+										}
+									});
+								}}
+								hintText="Total miles"
+							/>
+						</Dialog>
+					</div>
+					{/* //END SECTION FOR UPDATING ITEMS// */}
           
             
             </div>

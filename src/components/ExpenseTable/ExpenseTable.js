@@ -127,14 +127,7 @@ class ExpenseTable extends Component {
 
 	handleOnSubmit = () => {
 		console.log('update expense', this.state);
-		/*
-		let payload = this.state.getExpense.map(item => {
-			if (item.id == this.state.currentRow.id) {
-				item.item_price = this.state.currentRow.item_price;
-			}
-
-			return item;
-		}); */
+		
 
 		this.props.dispatch({
 			type: 'UPDATE_EXPENSE',

@@ -32,6 +32,16 @@ function* deleteMileageInfo(action){
         } catch (error) {}
 }
 
+function* updateMileageInfo(action){
+    console.log('UPDATE mileage saga triggered', action)
+        try{
+            yield call(axios.put, '/api/mileage/', action.payload);
+            //
+            yield put({
+                type: 'GET_MILEAGE',
+            });
+        } catch (error) {}
+}
 
 
 function* addMileageSaga() {
@@ -39,5 +49,7 @@ function* addMileageSaga() {
     yield takeEvery('GET_MILEAGE', getMileageInfo);
     yield takeEvery('ADD_MILEAGE', addMileageInfo);
     yield takeEvery('DELETE_MILEAGE', deleteMileageInfo)
+    yield takeEvery('UPDATE_MILEAGE', updateMileageInfo)
+
 }
 export default addMileageSaga;

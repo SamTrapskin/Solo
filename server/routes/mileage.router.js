@@ -50,4 +50,23 @@ router.delete('/:id' , (req, res,next) => {
     });
 });
 
+router.put('/', (req, res) => {
+	const updatedMileage = req.body;
+	const queryText = `UPDATE mileage SET "description" = $1, "address" = $2, "travel_date" = $3, "total_miles" = $4 WHERE id=$5;`;
+	const queryValues = [
+				updatedMileage.description,
+				updatedMileage.address,
+				updatedMileage.travel_date,
+				updatedMileage.total_miles,
+				updatedMileage.id
+				];
+	pool.query(queryText, queryValues)
+		.then(() => { res.sendStatus(200); })
+			.catch((err) => {
+			console.log('Error completing SELECT mileage query', err);
+					res.sendStatus(500);
+				  });
+			  });
+	
+
 module.exports = router;
