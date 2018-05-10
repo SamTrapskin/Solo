@@ -20,16 +20,15 @@ const mapStateToProps = state => ({
   reduxState: state.getMileage
 });
 
-
 class MileageTable extends Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+      super(props);
 
-    this.state = {
-			getMileage: []
-		};
-	}
+      this.state = {
+        getMileage: []
+      };
+    }
     
   //   this.state = {
   //     controlledDate: null,
@@ -64,6 +63,7 @@ class MileageTable extends Component {
   //   });
   // };
 
+ 
   handleChange = (event, date) => {
 		this.setState({
 		  controlledDate: date,
@@ -97,7 +97,9 @@ class MileageTable extends Component {
 			type: 'DELETE_MILEAGE',
 			payload: id
 		});
-	};
+  };
+  
+  
 
   render() {
     // <AsyncValidationTable onSubmit={MileageTableList} />
@@ -164,7 +166,7 @@ class MileageTable extends Component {
                   </form>
 
           {/* TABLE HEADERS */}
-          <Table className="column middle">
+            <Table className="column middle">
                   <TableHeader>
           <TableRow>
         <TableHeaderColumn>Trip description</TableHeaderColumn>

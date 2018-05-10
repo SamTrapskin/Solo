@@ -10,8 +10,10 @@ body {
 
 #expenseForm {
     float: left;
-    background-color: #35ADCE;
+    color: whitesmoke;
+    background-color: #222F3F;
     margin-bottom: 20px;
+    margin-left: 5px;
     margin-right:10px;
     padding: 0;
     text-align: center;
@@ -20,9 +22,16 @@ body {
 #expSubmit {
     margin-top: 30px;
 }
+
+#expenseTable {
+
+  font-family: 'Hammersmith One', sans-serif;
+  margin-right: 10px;
+
+}
 form {
     
-    background-color: #35ADCE;
+    background-color: #212F40;
     text-align: center;
   
   }
@@ -91,7 +100,9 @@ li {
     height: 70px;
     margin-right: 30px;
   }
-
+#login{
+  color: whitesmoke;
+}
 .message {
   padding: 10px 0;
 }
@@ -110,10 +121,12 @@ li {
 
 #mileageForm{
     float: left;
-    background-color: #35ADCE;
+    color: whitesmoke;
+    background-color: #222F3F;
     margin-top: 20px;
     margin-bottom: 20px;
-    margin-right:10px;
+    margin-right: 5px;
+    margin-left:5px;
     padding: 0;
     text-align: center;
 }
@@ -136,6 +149,10 @@ border-radius: 0px;
     float: right;
 }
 
+#password {
+  color: whitesmoke
+}
+
 RaisedButton {
     color: #00f19a;
 }
@@ -150,6 +167,7 @@ table {
     border: 1px solid black;
     background-color: #f7f2e3;
     color: black;
+    margin-right: 5px;
 
   }
   
@@ -159,19 +177,26 @@ table {
 
   }
   td {
-    font-weight: bold;
     text-align: center;
     margin-left: 60px;
+    font-family: 'Hammersmith One', sans-serif;
+
+    
   }
 
   .td {
     text-align: center;
     margin-left: 60px;
+    font-family: 'Hammersmith One', sans-serif;
+
   }
   th {
     border: 1px solid black;
     text-align: center;
     font-weight: bold;
+    font-family: 'Hammersmith One', sans-serif;
+    color: black;
+
   }
 
   /* #toggle { 
@@ -224,7 +249,9 @@ ul {
 }
 
 
-
+#username {
+  color: whitesmoke;
+}
 
 
 
@@ -239,6 +266,7 @@ ul {
 
   .col-m {
       margin-top: 20px;
+      margin-right: 5px;
       width: 50%;
   }
 

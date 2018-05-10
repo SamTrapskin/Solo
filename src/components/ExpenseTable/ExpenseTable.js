@@ -12,7 +12,6 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-
 //STYLE VARIABLE FOR MATERIAL BUTTON
 const style = {
 	margin: 12
@@ -36,21 +35,27 @@ class ExpenseTable extends Component {
 		// this.state = {
 		// 	controlledDate: null,
 		//   };
-		
-	
 	}
 
 	isSelected = (index) => {
 		return this.state.selected.indexOf(index) !== -1;
 	};
 
-
 	handleOpen = () => {
-		this.setState({open: true});
+		this.setState({ open: true });
 	};
-	
+
 	handleClose = () => {
-		this.setState({open: false});
+		this.setState({ open: false });
+	};
+
+	addItUp = () => {
+		let sum = 0;
+		for (let i = 0; i < this.state.item_price.length; i++) {
+			if (this.state.item_price[i].className == 'count-me') {
+				sum += isNaN(this.state.item_price[i].innerHTML) ? 0 : parseInt(this.state.item_price[i].innerHTML);
+			}
+		}
 	};
 
 	//on page load, DISPATCH GET_EXPENSE is
@@ -76,9 +81,9 @@ class ExpenseTable extends Component {
 
 	handleChange = (event, date) => {
 		this.setState({
-		  controlledDate: date,
+			controlledDate: date
 		});
-	  };
+	};
 
 	//SETS STATE FOR ALL INPUTS
 	handleChange = (name) => {
@@ -97,7 +102,6 @@ class ExpenseTable extends Component {
 			payload: this.state
 		});
 	};
-
 
 	//TRASH ICON-TRIGGERS DISPATCH TO EXPENSE SAGA DELETE
 	handleClickRemove = (id) => {
@@ -138,25 +142,16 @@ class ExpenseTable extends Component {
 		});
 
 		this.handleClose();
-	}
+	};
 
 	render() {
 		console.log('HEY-oooo expense render', this.state);
 		let content = null;
 
 		if (this.props.user.userName) {
-			
 			const actions = [
-				<FlatButton
-					label="Cancel"
-					primary={true}
-					onClick={this.handleClose}
-				/>,
-				<FlatButton
-					label="Submit"
-					primary={true}				
-					onClick={this.handleOnSubmit}
-				/>,
+				<FlatButton label="Cancel" primary={true} onClick={this.handleClose} />,
+				<FlatButton label="Submit" primary={true} onClick={this.handleOnSubmit} />
 			];
 
 			//MAP OVER REDUX STATE.
@@ -164,14 +159,11 @@ class ExpenseTable extends Component {
 				//.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
 				const { id, item_description, purchase_date, item_price, item_link } = row;
 				return (
-
-						// TABLE ROWS //
-					<TableRow selectable={false} key={ id }>
-						
-
+					// TABLE ROWS //
+					<TableRow selectable={false} key={id}>
 						<TableRowColumn>{item_description}</TableRowColumn>
 						<TableRowColumn>{purchase_date}</TableRowColumn>
-						<TableRowColumn>${item_price}</TableRowColumn>
+						<TableRowColumn id="count-me">${item_price}</TableRowColumn>
 						<TableRowColumn>
 							<a href={item_link}>{item_link}</a>
 						</TableRowColumn>
@@ -195,11 +187,10 @@ class ExpenseTable extends Component {
 				);
 			});
 
-				//HYPERLINKS THE LINK COLUMN//
+			//HYPERLINKS THE LINK COLUMN//
 			<a href="#child4">My clickable text</a>;
 			content = (
 				<div>
-
 					{/* FORM FOR ADDING EXPENSE (DATA) */}
 
 					<form id="expenseForm">
@@ -216,12 +207,12 @@ class ExpenseTable extends Component {
 						/>
 
 						<br />
-					
+
 						<DatePicker
-        					hintText="Controlled Date Input"
-       						value={this.state.controlledDate}
-        					onChange={this.handleDateChange}
-     						 />
+							hintText="Controlled Date Input"
+							value={this.state.controlledDate}
+							onChange={this.handleDateChange}
+						/>
 
 						<br />
 
@@ -255,29 +246,17 @@ class ExpenseTable extends Component {
 						/>
 						{/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
 
-						<h1>Total:</h1>
+						<h2>Total Expenses</h2>
 						<br />
-						<h3>$748.93</h3>
+						<h3>{this.state.item_price}</h3>
 					</form>
-					{ /*
-					<table>
-						<thead>
-							<tr>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
-					/*}
+
 					{/* TABLE HEADERS */}
-					<Table className="expenseTable">{/* <table> */}
+					<Table className="expenseTable">
+						{/* <table> */}
 						<TableHeader>
-							<TableRow>
-								<TableHeaderColumn>Item description</TableHeaderColumn>
+							<TableRow className="expenseTable">
+								<TableHeaderColumn className="expenseTable">Item description</TableHeaderColumn>
 								<TableHeaderColumn>Purchase Date</TableHeaderColumn>
 								<TableHeaderColumn>Item Price</TableHeaderColumn>
 								<TableHeaderColumn>Item Link</TableHeaderColumn>
@@ -289,18 +268,18 @@ class ExpenseTable extends Component {
 						<TableBody>{tableRows}</TableBody>
 					</Table>
 
-					<div>						
-						{/* <RaisedButton label="Modal Dialog" onClick={this.handleOpen} /> */}
+					{/* //SECTION FOR UPDATING ITEMS// */}
+					<div>
 						<Dialog
-							title= {`Change Price for ${this.state.currentRow.item_description}` }
+							title={`Change Item info for ${this.state.currentRow.item_description}???`}
 							actions={actions}
 							modal={true}
 							open={this.state.open}
 						>
-							<TextField 
+							<TextField
 								id="price"
 								value={this.state.currentRow.item_price}
-								onChange={ (event) => {
+								onChange={(event) => {
 									this.setState({
 										currentRow: {
 											...this.state.currentRow,
@@ -310,9 +289,35 @@ class ExpenseTable extends Component {
 								}}
 								hintText="Price"
 							/>
+							<TextField
+								id="purchase date"
+								value={this.state.currentRow.purchase_date}
+								onChange={(event) => {
+									this.setState({
+										currentRow: {
+											...this.state.currentRow,
+											purchase_date: event.target.value
+										}
+									});
+								}}
+								hintText="Purchase Date"
+							/>
+							<TextField
+								id="description"
+								value={this.state.currentRow.item_description}
+								onChange={(event) => {
+									this.setState({
+										currentRow: {
+											...this.state.currentRow,
+											item_description: event.target.value
+										}
+									});
+								}}
+								hintText="Item Description"
+							/>
 						</Dialog>
 					</div>
-
+					{/* //END SECTION FOR UPDATING ITEMS// */}
 				</div>
 			);
 		}
@@ -321,8 +326,6 @@ class ExpenseTable extends Component {
 			<div>
 				<Nav />
 				{content}
-
-
 			</div>
 		);
 	}
