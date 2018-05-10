@@ -1,21 +1,19 @@
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import '../../styles/main.css';
-import logger from 'redux-logger';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import PropTypes from 'prop-types';
-import { FormControl } from 'react-bootstrap';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import TrashIcon from 'material-ui/svg-icons/action/delete';
 import DatePicker from 'material-ui/DatePicker';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
-//STYLE VARIABLE BOR MATERIAL BUTTON
+
+//STYLE VARIABLE FOR MATERIAL BUTTON
 const style = {
 	margin: 12
 	//
@@ -31,9 +29,29 @@ class ExpenseTable extends Component {
 		super(props);
 
 		this.state = {
-			getExpense: []
+			open: false,
+			getExpense: [],
+			currentRow: {}
 		};
+		// this.state = {
+		// 	controlledDate: null,
+		//   };
+		
+	
 	}
+
+	isSelected = (index) => {
+		return this.state.selected.indexOf(index) !== -1;
+	};
+
+
+	handleOpen = () => {
+		this.setState({open: true});
+	};
+	
+	handleClose = () => {
+		this.setState({open: false});
+	};
 
 	//on page load, DISPATCH GET_EXPENSE is
 	//SENT TO expenseSaga which then
@@ -56,6 +74,12 @@ class ExpenseTable extends Component {
 		// this.props.history.push('home');
 	};
 
+	handleChange = (event, date) => {
+		this.setState({
+		  controlledDate: date,
+		});
+	  };
+
 	//SETS STATE FOR ALL INPUTS
 	handleChange = (name) => {
 		return (event) => {
@@ -74,6 +98,7 @@ class ExpenseTable extends Component {
 		});
 	};
 
+
 	//TRASH ICON-TRIGGERS DISPATCH TO EXPENSE SAGA DELETE
 	handleClickRemove = (id) => {
 		console.log('delete expense', this.state);
@@ -83,39 +108,99 @@ class ExpenseTable extends Component {
 		});
 	};
 
+	handleClickEdit = (event) => {
+		this.setState({
+			open: true,
+			currentRow: event,
+			editDescription: !this.state.editDescription
+		});
+		console.log('edit expense', this.state);
+		this.props.dispatch({
+			type: 'EDIT_DESCR',
+			payload: this.state
+		});
+	};
+
+	handleOnSubmit = () => {
+		console.log('update expense', this.state);
+		/*
+		let payload = this.state.getExpense.map(item => {
+			if (item.id == this.state.currentRow.id) {
+				item.item_price = this.state.currentRow.item_price;
+			}
+
+			return item;
+		}); */
+
+		this.props.dispatch({
+			type: 'UPDATE_EXPENSE',
+			payload: this.state.currentRow
+		});
+
+		this.handleClose();
+	}
+
 	render() {
 		console.log('HEY-oooo expense render', this.state);
 		let content = null;
+
 		if (this.props.user.userName) {
+			
+			const actions = [
+				<FlatButton
+					label="Cancel"
+					primary={true}
+					onClick={this.handleClose}
+				/>,
+				<FlatButton
+					label="Submit"
+					primary={true}				
+					onClick={this.handleOnSubmit}
+				/>,
+			];
 
-      //MAP OVER REDUX STATE.
-      
-const tableRows = this.props.reduxState.map((row) => {
-
-        //.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
-        
+			//MAP OVER REDUX STATE.
+			const tableRows = this.props.reduxState.map((row) => {
+				//.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
 				const { id, item_description, purchase_date, item_price, item_link } = row;
 				return (
-					<TableRow selectable={false}>
-						{/* TABLE ROWS */}
+
+						// TABLE ROWS //
+					<TableRow selectable={false} key={ id }>
+						
 
 						<TableRowColumn>{item_description}</TableRowColumn>
 						<TableRowColumn>{purchase_date}</TableRowColumn>
-						<TableRowColumn>{item_price}</TableRowColumn>
-						<TableRowColumn>{item_link}</TableRowColumn>
-						<TableRowColumn><EditIcon /></TableRowColumn>
-            <TableRowColumn><TrashIcon onClick={() => {this.handleClickRemove(id);
-						}}/>
+						<TableRowColumn>${item_price}</TableRowColumn>
+						<TableRowColumn>
+							<a href={item_link}>{item_link}</a>
+						</TableRowColumn>
+						<TableRowColumn>
+							<EditIcon
+								onClick={() => {
+									this.handleClickEdit(row);
+								}}
+							/>
+						</TableRowColumn>
+						<TableRowColumn>
+							<TrashIcon
+								onClick={() => {
+									this.handleClickRemove(id);
+								}}
+							/>
 						</TableRowColumn>
 					</TableRow>
 
-					// END TABLE ROWS
+					// END TABLE ROWS//
 				);
 			});
 
+				//HYPERLINKS THE LINK COLUMN//
+			<a href="#child4">My clickable text</a>;
 			content = (
 				<div>
-					{/* FORM FOR ADDING EXPENSES(DATA) */}
+
+					{/* FORM FOR ADDING EXPENSE (DATA) */}
 
 					<form id="expenseForm">
 						<h3>
@@ -125,17 +210,21 @@ const tableRows = this.props.reduxState.map((row) => {
 						<input
 							type="text"
 							id="fname"
-							name="fname"
+							name="desc"
 							placeholder="Item description"
 							onChange={this.handleChange('item_description')}
 						/>
 
 						<br />
-						{/* <DatePicker
-        hintText="Date of purchase"
-        value={this.state.controlledDate}
-        onChange={this.handleDateChange('controlledDate')} */}
-						{/* /> */}
+					
+						<DatePicker
+        					hintText="Controlled Date Input"
+       						value={this.state.controlledDate}
+        					onChange={this.handleDateChange}
+     						 />
+
+						<br />
+
 						<br />
 						<input
 							type="text"
@@ -156,6 +245,7 @@ const tableRows = this.props.reduxState.map((row) => {
 
 						{/* END FORM */}
 
+						{/* FORM SUBMIT BUTTON */}
 						<RaisedButton
 							id="expSubmit"
 							label="Submit Expense"
@@ -163,31 +253,66 @@ const tableRows = this.props.reduxState.map((row) => {
 							style={style}
 							onClick={this.handleClick}
 						/>
-            {/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
+						{/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
 
 						<h1>Total:</h1>
 						<br />
 						<h3>$748.93</h3>
 					</form>
-
-
-          {/* TABLE HEADERS */}
-					<Table>
+					{ /*
+					<table>
+						<thead>
+							<tr>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+					/*}
+					{/* TABLE HEADERS */}
+					<Table className="expenseTable">{/* <table> */}
 						<TableHeader>
 							<TableRow>
 								<TableHeaderColumn>Item description</TableHeaderColumn>
 								<TableHeaderColumn>Purchase Date</TableHeaderColumn>
 								<TableHeaderColumn>Item Price</TableHeaderColumn>
 								<TableHeaderColumn>Item Link</TableHeaderColumn>
-								<TableHeaderColumn />
-								<TableHeaderColumn />
+								<TableHeaderColumn>Edit entry</TableHeaderColumn>
+								<TableHeaderColumn>Delete entry</TableHeaderColumn>
 							</TableRow>
 						</TableHeader>
 
-						<TableBody>
-							{tableRows}
-						</TableBody>
+						<TableBody>{tableRows}</TableBody>
 					</Table>
+
+					<div>						
+						{/* <RaisedButton label="Modal Dialog" onClick={this.handleOpen} /> */}
+						<Dialog
+							title= {`Change Price for ${this.state.currentRow.item_description}` }
+							actions={actions}
+							modal={true}
+							open={this.state.open}
+						>
+							<TextField 
+								id="price"
+								value={this.state.currentRow.item_price}
+								onChange={ (event) => {
+									this.setState({
+										currentRow: {
+											...this.state.currentRow,
+											item_price: event.target.value
+										}
+									});
+								}}
+								hintText="Price"
+							/>
+						</Dialog>
+					</div>
+
 				</div>
 			);
 		}
@@ -196,6 +321,8 @@ const tableRows = this.props.reduxState.map((row) => {
 			<div>
 				<Nav />
 				{content}
+
+
 			</div>
 		);
 	}

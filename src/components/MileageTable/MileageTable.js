@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Nav from '../../components/Nav/Nav';
 import { USER_ACTIONS } from '../../redux/actions/userActions';
-import ReactTable from "react-table";
-import 'react-table/react-table.css';
+import { triggerLogout } from '../../redux/actions/loginActions';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
-import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import TrashIcon from 'material-ui/svg-icons/action/delete';
 
@@ -59,13 +56,20 @@ class MileageTable extends Component {
 
   	//SETS STATE FOR ALL INPUTS
 
-  handleDateChange = (date) => {
-    return (event => {
-      this.setState({
-        controlledDate: date,
-      });
-    });
-  };
+  // handleDateChange = (date) => {
+  //   return (event => {
+  //     this.setState({
+  //       controlledDate: date,
+  //     });
+  //   });
+  // };
+
+  handleChange = (event, date) => {
+		this.setState({
+		  controlledDate: date,
+		});
+	  };
+
 
 	//SETS STATE FOR ALL INPUTS
 
@@ -130,7 +134,9 @@ class MileageTable extends Component {
         {/* FORM FOR ADDING EXPENSES(DATA) */}
     
         <form id="mileageForm">
-        <h2>Add a new mileage</h2>
+        <h3>Add a new <br />
+            mileage
+        </h3>
           <input type="text" id="fname" name="fname" placeholder ="Trip description" onChange={this.handleChange('description')}/>
           
           <br />
@@ -140,15 +146,15 @@ class MileageTable extends Component {
         onChange={this.handleDateChange('controlledDate')}
       /> */}
           <br />
-          <input type="text" id="lname" name="lname" placeholder ="Address" onChange={this.handleChange('item_price')}/>
+          <input type="text" id="lname" name="lname" placeholder ="Address" onChange={this.handleChange('address')}/>
           <br />
-          <input type="text" id="lname" name="lname" placeholder ="Total miles" onChange={this.handleChange('item_Link')} />
+          <input type="text" id="lname" name="lname" placeholder ="Total miles" onChange={this.handleChange('total_miles')} />
           <br />
 
         {/* END FORM */}
 
 
-          <RaisedButton id='expSubmit' label="Submit Expense" primary={true} style={style} onClick={this.handleClick}/>
+          <RaisedButton id='expSubmit' label="Submit Mileage" primary={true} style={style} onClick={this.handleClick}/>
        
 
             {/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
@@ -165,8 +171,8 @@ class MileageTable extends Component {
         <TableHeaderColumn>Trip Address</TableHeaderColumn>
         <TableHeaderColumn>Date of travel</TableHeaderColumn>
         <TableHeaderColumn>Total miles</TableHeaderColumn>
-        <TableHeaderColumn />
-				<TableHeaderColumn />
+        <TableHeaderColumn>Edit entry</TableHeaderColumn>
+				<TableHeaderColumn>Delete entry</TableHeaderColumn>
           </TableRow>
           </TableHeader>
               

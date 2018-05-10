@@ -28,12 +28,23 @@ function* deleteExpenseInfo(action){
     console.log('DELETE expense saga triggered', action)
         try{
             yield call(axios.delete, '/api/expense/' + action.payload);
-            //
             yield put({
                 type: 'GET_EXPENSE',
             })
         } catch (error) {}
 }
+
+function* updateExpenseInfo(action){
+    console.log('UPDATE expense saga triggered', action)
+        try{
+            yield call(axios.put, '/api/expense/', action.payload);
+            //
+            yield put({
+                type: 'GET_EXPENSE',
+            });
+        } catch (error) {}
+}
+
 
 
 function* addExpenseSaga() {
@@ -41,6 +52,7 @@ function* addExpenseSaga() {
     yield takeEvery('GET_EXPENSE', getExpenseInfo);
     yield takeEvery('ADD_EXPENSE', addExpenseInfo);
     yield takeEvery('DELETE_EXPENSE', deleteExpenseInfo);
+    yield takeEvery('UPDATE_EXPENSE', updateExpenseInfo);
 
 }
 

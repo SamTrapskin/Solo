@@ -1,4 +1,13 @@
-state = {
+import React from 'react';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+
+/**
+ * Alerts are urgent interruptions, requiring acknowledgement, that inform the user about a situation.
+ */
+export default class DialogExampleAlert extends React.Component {
+  state = {
     open: false,
   };
 
@@ -18,7 +27,7 @@ state = {
         onClick={this.handleClose}
       />,
       <FlatButton
-        label="Discard"
+        label="DELETE"
         primary={true}
         onClick={this.handleClose}
       />,
@@ -31,9 +40,9 @@ state = {
           actions={actions}
           modal={false}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onRequestClose={this.handleClickRemove}
         >
-          Discard draft?
+          Delete Entry!?
         </Dialog>
       </div>
     );

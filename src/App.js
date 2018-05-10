@@ -12,24 +12,20 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import ExpenseTable from './components/ExpenseTable/ExpenseTable';
 import MileageTable from './components/MileageTable/MileageTable';
-import LandingPage from './components/LandingPage/LandingPage';
 
 import './styles/main.css';
 
 const App = () => (
   <div>
-    <Header title="Project Base" />
+    <Header>   <img id="logo" src="https://i.imgur.com/yVY9G3n.png" alt="EXPENSUR"/>
+ </Header>
     <Router>
-      <Switch>
-        <Redirect exact from="/" to="/home" />
+       <Switch>
         <Route
           path="/login"
           component={LoginPage}
         /> 
-         <Route
-        path="/home"
-        component={LandingPage}
-      />
+        
         <Route
           path="/register"
           component={RegisterPage}
@@ -42,10 +38,10 @@ const App = () => (
           path="/mileage"
           component={MileageTable}
         />
-        {/* OTHERWISE (no path!) */}
+       OTHERWISE (no path!)
         <Route render={() => <h1>404</h1>} />
 
-      </Switch>
+       </Switch> 
     </Router>
   </div>
 );

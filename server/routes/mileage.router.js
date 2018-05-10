@@ -45,7 +45,7 @@ router.delete('/:id' , (req, res,next) => {
     pool.query(queryText, [req.params.id])
     .then(() => {res.sendStatus(200);
     }).catch((err) => {
-        console.log('Error completing SELECT plany query', err);
+        console.log('Error completing SELECT  query', err);
         res.sendStatus(500);
     });
 });

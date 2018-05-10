@@ -21,6 +21,15 @@ const addExpenseReducer = (state = [], action) => {
               return action.payload;
           } return state;
   }
+
+  function updateExpenseReducer (state = [], action) {
+    if (action.type === 'UPDATE_EXPENSE') {
+        console.log('Update reducer')
+            return action.payload;
+        }
+    }
+
+    
   
   
   export default addExpenseReducer;
