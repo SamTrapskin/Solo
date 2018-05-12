@@ -198,7 +198,6 @@ class MileageTable extends Component {
         <h3>Add a new <br />
             mileage
         </h3>
-          <input type="text" id="fname" name="fname" placeholder ="Trip description" onChange={this.handleChange('description')}/>
           
           <br />
           {/* <DatePicker
@@ -219,9 +218,8 @@ class MileageTable extends Component {
        
 
             {/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
-          <h1>Total:</h1>
+          <h2>Total Miles:</h2>
                  <br/> 
-                  <h3>$748.93</h3>
                   </form>
 
           {/* TABLE HEADERS */}

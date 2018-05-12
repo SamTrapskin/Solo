@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
 	console.log('Expense Get route');
-	let queryText = `SELECT * FROM items;`;
+	let queryText = `SELECT * FROM items ORDER BY id DESC;`;
 	pool
 		.query(queryText)
 		.then((result) => {
@@ -26,9 +26,9 @@ router.post('/', (req, res, next) => {
 	console.log('POST Route');
 	console.log(req.body);
 	if (req.isAuthenticated()) {
-		const queryText = `INSERT INTO items ("item_description", "item_price", "item_link") VALUES ($1, $2, $3);`;
+		const queryText = `INSERT INTO items ("item_description", "purchase_date", "item_price", "item_link") VALUES ($1, $2, $3, $4);`;
 		pool
-			.query(queryText, [ req.body.item_description, req.body.item_price, req.body.item_link])
+			.query(queryText, [ req.body.item_description, req.body.purchase_date, req.body.item_price, req.body.item_link])
 			.then((result) => {
 				res.sendStatus(201);
 			})

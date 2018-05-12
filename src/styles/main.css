@@ -1,12 +1,22 @@
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Hammersmith One', Monterestat;
+
   height: 100%;
 
 }
 
+#date{
 
-
+  color: whitesmoke;
+  text-align: center;
+}
+.descript {
+  margin-left: 245px;
+  /* margin-right: 40px; */
+  width: 17%;
+  text-align: center;
+}
 
 #expenseForm {
     float: left;
@@ -26,7 +36,8 @@ body {
 #expenseTable {
 
   font-family: 'Hammersmith One', sans-serif;
-  margin-right: 10px;
+  text-align: center;
+  /* margin-right: 10px; */
 
 }
 form {
@@ -49,6 +60,7 @@ h1 {
     margin: 0;
   }
   
+
 
 input {
     margin: 5px;
@@ -76,6 +88,8 @@ input {
   filter:blur(2px);
 }
 
+
+
 li {
     float: left;
   }
@@ -96,13 +110,16 @@ li {
   }
 
   #logo {
-    width: 400px;
-    height: 70px;
+    width: 310px;
+    height: 140px;
     margin-right: 30px;
   }
 #login{
   color: whitesmoke;
+  margin-left: 15px;
 }
+
+
 .message {
   padding: 10px 0;
 }

@@ -6,7 +6,7 @@ import expenseSaga from './expenseSaga';
 import expenseReducer from '../reducers/expenseReducer';
 import mileageSaga from './mileageSaga';
 import mileageReducer from '../reducers/mileageReducer';
-
+// import imageSaga from './imageSaga';   RELEASE 2.0
 
 
 
@@ -15,7 +15,8 @@ export default function* rootSaga() {
     userSaga(),
     loginSaga(),
     expenseSaga(),
-    mileageSaga()
+    mileageSaga(),
+    // imageSaga()    RELEASE 2.0
     
     
     // watchIncrementAsync()

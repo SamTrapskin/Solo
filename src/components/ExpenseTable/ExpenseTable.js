@@ -7,10 +7,19 @@ import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowCol
 import RaisedButton from 'material-ui/RaisedButton';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import TrashIcon from 'material-ui/svg-icons/action/delete';
-import DatePicker from 'material-ui/DatePicker';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import show from 'mui-simple-snackbars';
+import ReactFilestack, { client } from 'filestack-react';
+import DateSelect from '../DateSelect/DateSelect';
+import UserDeletedSnackbar from '../UserDeletedSnackbar/UserDeletedSnackbar';
+import Snackbar from 'material-ui/Snackbar';
+import PropTypes from 'prop-types';
+
+
+
+
 
 //STYLE VARIABLE FOR MATERIAL BUTTON
 const style = {
@@ -18,7 +27,7 @@ const style = {
 	//
 };
 
-const mapStateToProps = (state) => ({
+  const mapStateToProps = (state) => ({
 	user: state.user,
 	reduxState: state.getExpense
 });
@@ -30,11 +39,16 @@ class ExpenseTable extends Component {
 		this.state = {
 			open: false,
 			getExpense: [],
-			currentRow: {}
+			currentRow: {},
+			openSnackbar: false,
+			actionType: '',
+			snackbarText: {
+				edit: 'You have updated your expense!',
+				add: 'You have added a new expense successfully!',
+				delete: 'You have deleted the expense!',
+				date: 'Date has been entered!'
+			}
 		};
-		// this.state = {
-		// 	controlledDate: null,
-		//   };
 	}
 
 	isSelected = (index) => {
@@ -49,14 +63,6 @@ class ExpenseTable extends Component {
 		this.setState({ open: false });
 	};
 
-	addItUp = () => {
-		let sum = 0;
-		for (let i = 0; i < this.state.item_price.length; i++) {
-			if (this.state.item_price[i].className == 'count-me') {
-				sum += isNaN(this.state.item_price[i].innerHTML) ? 0 : parseInt(this.state.item_price[i].innerHTML);
-			}
-		}
-	};
 
 	//on page load, DISPATCH GET_EXPENSE is
 	//SENT TO expenseSaga which then
@@ -79,14 +85,11 @@ class ExpenseTable extends Component {
 		// this.props.history.push('home');
 	};
 
-	handleChange = (event, date) => {
-		this.setState({
-			controlledDate: date
-		});
-	};
+	
 
 	//SETS STATE FOR ALL INPUTS
-	handleChange = (name) => {
+	handleChange = (name, date) => {
+		
 		return (event) => {
 			this.setState({
 				[name]: event.target.value
@@ -94,23 +97,55 @@ class ExpenseTable extends Component {
 		};
 	};
 
+	handleDatePicker = (name, date) => {
+		console.log('handling date change', name, date)
+		this.setState(prevState => ({
+			currentRow: {
+				...prevState.currentRow,
+				purchase_date: date
+			},
+			purchase_date: date,
+			actionType: 'date'
+		}))
+		this.setState({
+			openSnackbar: true
+		})
+	}
+
+	
+
 	//SUBMIT BUTTON- TRIGGERS DISPATCH TO EXPENSE SAGA TO ADD DATA
 	handleClick = () => {
 		console.log('add expense', this.state);
+		this.setState({
+			actionType: 'add'
+		})
 		this.props.dispatch({
 			type: 'ADD_EXPENSE',
 			payload: this.state
 		});
+
+		this.setState({
+			openSnackbar: true
+		})
 	};
 
 	//TRASH ICON-TRIGGERS DISPATCH TO EXPENSE SAGA DELETE
 	handleClickRemove = (id) => {
 		console.log('delete expense', this.state);
+		this.setState({
+			actionType: 'delete'
+		})
 		this.props.dispatch({
 			type: 'DELETE_EXPENSE',
 			payload: id
 		});
-	};
+
+		this.setState({
+			openSnackbar: true
+		})
+		};
+
 
 	handleClickEdit = (event) => {
 		this.setState({
@@ -127,7 +162,9 @@ class ExpenseTable extends Component {
 
 	handleOnSubmit = () => {
 		console.log('update expense', this.state);
-		
+		this.setState({
+			actionType: 'edit'
+		})
 
 		this.props.dispatch({
 			type: 'UPDATE_EXPENSE',
@@ -135,12 +172,50 @@ class ExpenseTable extends Component {
 		});
 
 		this.handleClose();
+		this.setState({
+			openSnackbar: true
+		})
 	};
 
-	render() {
-		console.log('HEY-oooo expense render', this.state);
-		let content = null;
 
+			// FOR FUTURE RELEASE////////////////////////////
+	// handleUpload = (result) => {
+	// 	this.setState({
+	// 	  newImage: {
+	// 			title: this.state.newImage.description,
+	// 			description: this.state.newImage.description,
+	// 			image_url: result.filesUploaded[0].url
+	// 		}
+	// 	})
+	// 	this.props.dispatch({
+	// 	  type: 'ADD_IMAGE',
+	// 	  payload: this.state.newImage
+	// 	})
+	// static propTypes = {
+	// 	apikey: PropTypes.string.isRequired,
+	// 	 };
+   
+	// }
+			// FOR FUTURE RELEASE////////////////////////////
+
+	
+
+	handleSnackbarClose = (arg) => {
+		console.log('snackbar has closed', arg)
+		this.setState({
+			openSnackbar: false
+		})
+	}
+	
+	
+
+	render() {
+
+		let totalExpensePrice = 0
+		console.log('all items check for total', this.props.reduxState)
+		console.log('HEY-oooo expense render state and props', this.state, this.props);
+		let content = null;
+		// const {AsrGxIEK3SGqjQA3OgxDXz}  = this.props;   FUTURE RELEASE
 		if (this.props.user.userName) {
 			const actions = [
 				<FlatButton label="Cancel" primary={true} onClick={this.handleClose} />,
@@ -151,15 +226,31 @@ class ExpenseTable extends Component {
 			const tableRows = this.props.reduxState.map((row) => {
 				//.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
 				const { id, item_description, purchase_date, item_price, item_link } = row;
+				totalExpensePrice += parseInt(item_price)			
 				return (
 					// TABLE ROWS //
 					<TableRow selectable={false} key={id}>
-						<TableRowColumn>{item_description}</TableRowColumn>
+						<TableRowColumn className='descript'>{item_description}</TableRowColumn>
 						<TableRowColumn>{purchase_date}</TableRowColumn>
 						<TableRowColumn id="count-me">${item_price}</TableRowColumn>
 						<TableRowColumn>
 							<a href={item_link}>{item_link}</a>
 						</TableRowColumn>
+						{/* <TableRowColumn> */}
+					
+						
+						{/* FOR FUTURE RELEASE */}
+						{/* <ReactFilestack
+							apikey={'AsrGxIEK3SGqjQA3OgxDXz'}
+							options={options}
+							onSuccess={this.yourCallbackFunction}
+							link
+							/>
+							FOR FUTURE RELEASE
+
+           */}
+							
+						{/* </TableRowColumn> */}
 						<TableRowColumn>
 							<EditIcon
 								onClick={() => {
@@ -168,11 +259,17 @@ class ExpenseTable extends Component {
 							/>
 						</TableRowColumn>
 						<TableRowColumn>
-							<TrashIcon
+							<TrashIcon 
 								onClick={() => {
-									this.handleClickRemove(id);
+									
+									this.handleClickRemove(id)
+ 
+									
+
+
 								}}
-							/>
+								/>
+						
 						</TableRowColumn>
 					</TableRow>
 
@@ -184,6 +281,8 @@ class ExpenseTable extends Component {
 			<a href="#child4">My clickable text</a>;
 			content = (
 				<div>
+
+			
 					{/* FORM FOR ADDING EXPENSE (DATA) */}
 
 					<form id="expenseForm">
@@ -191,57 +290,76 @@ class ExpenseTable extends Component {
 							Add a new <br />
 							expense
 						</h3>
-						<input
-							type="text"
+						<TextField
+							  inputStyle={{color:'whiteSmoke'}}
+							  floatingLabelText="Enter description"
+							  floatingLabelStyle={{color: 'whitesmoke'}}
+							  onChange={this.handleChange('item_description')}
+							  hintStyle={{color:'whitesmoke'}}
+							  inputStyle={{textAlign: 'center', color: 'whitesmoke'}}
+    					/>
+							{/* type="text"
 							id="fname"
 							name="desc"
 							placeholder="Item description"
 							onChange={this.handleChange('item_description')}
-						/>
+						/> */}
+
+						<br />
+						<br />
+
+						
+						
+						<DateSelect 
+						hintText="Purchase date"
+						value = {this.state.purchase_date}
+						onChange={this.handleDatePicker}
+						
+					/>
+						<br />
 
 						<br />
 
-						<DatePicker
-							hintText="Controlled Date Input"
-							value={this.state.controlledDate}
-							onChange={this.handleDateChange}
-						/>
-
+							<TextField
+							  inputStyle={{color:'whiteSmoke'}}
+							  floatingLabelText="Item price"
+							  floatingLabelStyle={{color: 'whitesmoke'}}
+							  onChange={this.handleChange('item_price')}
+							  hintStyle={{color:'whitesmoke'}}
+							  inputStyle={{textAlign: 'center', color: 'whitesmoke'}}
+    					/>
+						
 						<br />
-
-						<br />
-						<input
-							type="text"
-							id="lname"
-							name="lname"
-							placeholder="Item price"
-							onChange={this.handleChange('item_price')}
-						/>
-						<br />
-						<input
-							type="text"
-							id="lname"
-							name="lname"
-							placeholder="Item link"
-							onChange={this.handleChange('item_link')}
-						/>
+						<TextField
+							  inputStyle={{color:'whiteSmoke'}}
+							  floatingLabelText="Item link"
+							  floatingLabelStyle={{color: 'whitesmoke'}}
+							  onChange={this.handleChange('item_link')}
+							  hintStyle={{color:'whitesmoke'}}
+							  inputStyle={{textAlign: 'center', color: 'whitesmoke'}}
+    					/>
 						<br />
 
 						{/* END FORM */}
 
 						{/* FORM SUBMIT BUTTON */}
+						<div>
 						<RaisedButton
 							id="expSubmit"
 							label="Submit Expense"
 							primary={true}
-							style={style}
-							onClick={this.handleClick}
-						/>
+							style={style}	
+							onClick={this.handleClick}/>
+
+						
+						
+						
+						</div>
 						{/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
 
-						<h2>Total Expenses</h2>
+						<h3>Total Expenses</h3>
 						<br />
-						<h3>{this.state.item_price}</h3>
+			<h3>${totalExpensePrice}</h3>
 					</form>
 
 					{/* TABLE HEADERS */}
@@ -253,6 +371,7 @@ class ExpenseTable extends Component {
 								<TableHeaderColumn>Purchase Date</TableHeaderColumn>
 								<TableHeaderColumn>Item Price</TableHeaderColumn>
 								<TableHeaderColumn>Item Link</TableHeaderColumn>
+								{/* <TableHeaderColumn>Image Upload</TableHeaderColumn> */}
 								<TableHeaderColumn>Edit entry</TableHeaderColumn>
 								<TableHeaderColumn>Delete entry</TableHeaderColumn>
 							</TableRow>
@@ -260,6 +379,12 @@ class ExpenseTable extends Component {
 
 						<TableBody>{tableRows}</TableBody>
 					</Table>
+					<Snackbar
+						open={this.state.openSnackbar}
+						message={this.state.snackbarText[this.state.actionType]}
+						autoHideDuration={4000}
+						onRequestClose={this.handleSnackbarClose}
+						/>
 
 					{/* //SECTION FOR UPDATING ITEMS// */}
 					<div>
@@ -284,6 +409,7 @@ class ExpenseTable extends Component {
 							/>
 							<TextField
 								id="purchase date"
+								hintText= "Purchase date"
 								value={this.state.currentRow.purchase_date}
 								onChange={(event) => {
 									this.setState({

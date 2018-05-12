@@ -12,6 +12,7 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const expenseRouter = require('./routes/expense.router');
 const mileageRouter = require('./routes/mileage.router');
+// const imageRouter = require('./routes/image.router');
 
 
 // Body parser middleware
@@ -28,6 +29,8 @@ app.use(passport.session());
 /* Routes */
 app.use('/api/expense', expenseRouter);
 app.use('/api/mileage', mileageRouter);
+// app.use('/api/image', imageRouter);
+
 
 
 app.use('/api/user', userRouter);

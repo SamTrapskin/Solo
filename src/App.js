@@ -1,5 +1,8 @@
 
 import React from 'react';
+import './styles/main.css';
+
+
 import {
   BrowserRouter as Router,
   Route,
@@ -13,11 +16,10 @@ import RegisterPage from './components/RegisterPage/RegisterPage';
 import ExpenseTable from './components/ExpenseTable/ExpenseTable';
 import MileageTable from './components/MileageTable/MileageTable';
 
-import './styles/main.css';
 
 const App = () => (
   <div>
-    <Header>   <img id="logo" src="https://i.imgur.com/yVY9G3n.png" alt="EXPENSUR"/>
+    <Header id="top">   
  </Header>
     <Router>
        <Switch>

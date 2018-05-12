@@ -1,5 +1,5 @@
 import React from 'react';
-// import Button from 'material-ui/Button';
+import LoginPage from '../LoginPage/LoginPage';
 
 const Nav = () => (
 
