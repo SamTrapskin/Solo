@@ -10,6 +10,7 @@ import TrashIcon from 'material-ui/svg-icons/action/delete';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import DateSelect from '../DateSelect/DateSelect';
 
 //STYLE VARIABLE BOR MATERIAL BUTTON
 
@@ -102,7 +103,23 @@ class MileageTable extends Component {
 				[name]: event.target.value
 			});
 		};
-	};
+  };
+  
+
+  handleDatePicker = (name, date) => {
+		console.log('handling date change', name, date)
+		this.setState(prevState => ({
+			currentRow: {
+				...prevState.currentRow,
+				travel_date: date
+			},
+			travel_date: date,
+			actionType: 'date'
+		}))
+		this.setState({
+			openSnackbar: true
+		})
+	}
 
     	//SUBMIT BUTTON- TRIGGERS DISPATCH TO EXPENSE SAGA TO ADD DATA
 
@@ -149,7 +166,7 @@ class MileageTable extends Component {
   
 
   render() {
-    // <AsyncValidationTable onSubmit={MileageTableList} />
+    let totalMileage = 0;
     console.log('mileage render', this.state)
     let content = null;
     if (this.props.user.userName) {
@@ -164,6 +181,7 @@ class MileageTable extends Component {
 
       //.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
       const { id, description, address, travel_date, total_miles} = row;
+      totalMileage += parseInt(total_miles)
       return (
         <TableRow selectable={false} key={id}>
         {/* TABLE ROWS */}
@@ -198,17 +216,43 @@ class MileageTable extends Component {
         <h3>Add a new <br />
             mileage
         </h3>
-          
+        <TextField
+							  inputStyle={{color:'whiteSmoke'}}
+							  floatingLabelText="Trip description"
+							  floatingLabelStyle={{color: 'whitesmoke'}}
+							  onChange={this.handleChange('description')}
+							  hintStyle={{color:'whitesmoke'}}
+							  inputStyle={{textAlign: 'center', color: 'whitesmoke'}}
+    					/>
           <br />
-          {/* <DatePicker
-        hintText="Travel date"
-         value={this.state.controlledDate}
-        onChange={this.handleDateChange('controlledDate')}
-      /> */}
           <br />
-          <input type="text" id="lname" name="lname" placeholder ="Address" onChange={this.handleChange('address')}/>
+
+          	<DateSelect 
+						hintText="Purchase date"
+						value = {this.state.travel_date}
+						onChange={this.handleDatePicker}
+						
+					/>
+
           <br />
-          <input type="text" id="lname" name="lname" placeholder ="Total miles" onChange={this.handleChange('total_miles')} />
+          <TextField
+							  inputStyle={{color:'whiteSmoke'}}
+							  floatingLabelText="Trip address"
+							  floatingLabelStyle={{color: 'whitesmoke'}}
+							  onChange={this.handleChange('address')}
+							  hintStyle={{color:'whitesmoke'}}
+							  inputStyle={{textAlign: 'center', color: 'whitesmoke'}}
+    					/>
+          <br />
+
+            <TextField
+							  inputStyle={{color:'whiteSmoke'}}
+							  floatingLabelText="Total miles"
+							  floatingLabelStyle={{color: 'whitesmoke'}}
+							  onChange={this.handleChange('total_miles')}
+							  hintStyle={{color:'whitesmoke'}}
+							  inputStyle={{textAlign: 'center', color: 'whitesmoke'}}
+    					/>
           <br />
 
         {/* END FORM */}
@@ -218,7 +262,8 @@ class MileageTable extends Component {
        
 
             {/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
-          <h2>Total Miles:</h2>
+            <h3>Total Mileage</h3>
+          <h1>{totalMileage} mi</h1>
                  <br/> 
                   </form>
 

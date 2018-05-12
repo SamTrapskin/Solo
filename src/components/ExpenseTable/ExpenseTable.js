@@ -358,8 +358,8 @@ class ExpenseTable extends Component {
 						{/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
 
 						<h3>Total Expenses</h3>
-						<br />
-			<h3>${totalExpensePrice}</h3>
+						
+			<h1>${totalExpensePrice}</h1>
 					</form>
 
 					{/* TABLE HEADERS */}
