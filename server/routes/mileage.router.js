@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
 	console.log('mileage Get route');
-	let queryText = `SELECT * FROM mileage;`;
+	let queryText = `SELECT * FROM mileage ORDER BY id DESC;`;
 	pool
 		.query(queryText)
 		.then((result) => {
