@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
 	console.log('Expense Get route');
-	let queryText = `SELECT * FROM items ORDER BY id DESC;`;
+	let queryText = `SELECT * FROM items ORDER BY purchase_date DESC;`;
 	pool
 		.query(queryText)
 		.then((result) => {
