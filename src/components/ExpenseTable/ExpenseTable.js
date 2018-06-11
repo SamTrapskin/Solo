@@ -19,7 +19,12 @@ import Snackbar from 'material-ui/Snackbar';
 import moment from 'moment';
 import Alert from '../Alert/Alert';
 import PropTypes from 'prop-types';
+<<<<<<< HEAD
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
+=======
+import DatePicker from 'react-datepicker';
+
+>>>>>>> 32a9a03b74cee157fef83c6019aa996789791ece
 //STYLE VARIABLE FOR MATERIAL BUTTON
 const style = {
 	margin: 12
@@ -257,7 +262,80 @@ class ExpenseTable extends Component {
 				<div>
 					{/* FORM FOR ADDING EXPENSE (DATA) */}
 
+<<<<<<< HEAD
 					 <ExpenseForm />
+=======
+					<form id="expenseForm">
+						<h3>
+							Add a new <br />
+							expense
+						</h3>
+						<TextField
+							inputStyle={{ color: 'whiteSmoke' }}
+							floatingLabelText="Enter description"
+							floatingLabelStyle={{ color: 'whitesmoke' }}
+							onChange={this.handleChange('item_description')}
+							hintStyle={{ color: 'whitesmoke' }}
+							inputStyle={{ textAlign: 'center', color: 'whitesmoke' }}
+						/>
+						{/* type="text"
+							id="fname"
+							name="desc"
+							placeholder="Item description"
+							onChange={this.handleChange('item_description')}
+						/> */}
+
+						<br />
+						<br />
+
+						<DateSelect
+							hintText="Purchase date"
+							value={this.state.purchase_date}
+							onChange={this.handleDatePicker}
+						/>
+						<br />
+
+						<br />
+
+						<TextField
+							inputStyle={{ color: 'whiteSmoke' }}
+							floatingLabelText="Item price"
+							floatingLabelStyle={{ color: 'whitesmoke' }}
+							onChange={this.handleChange('item_price')}
+							hintStyle={{ color: 'whitesmoke' }}
+							inputStyle={{ textAlign: 'center', color: 'whitesmoke' }}
+						/>
+
+						<br />
+						<TextField
+							inputStyle={{ color: 'whiteSmoke' }}
+							floatingLabelText="Item link"
+							floatingLabelStyle={{ color: 'whitesmoke' }}
+							onChange={this.handleChange('item_link')}
+							hintStyle={{ color: 'whitesmoke' }}
+							inputStyle={{ textAlign: 'center', color: 'whitesmoke' }}
+						/>
+						<br />
+
+						{/* END FORM */}
+
+						{/* FORM SUBMIT BUTTON */}
+						<div>
+							<RaisedButton
+								id="expSubmit"
+								label="Submit Expense"
+								primary={true}
+								style={style}
+								onClick={this.handleClick}
+							/>
+						</div>
+						{/* TABLE TOTAL KEEPS CURRENT TOTAL OF PRICE COLOUMN */}
+
+						<h3>Total Expenses</h3>
+
+						<h1>${totalExpensePrice}</h1>
+					</form>
+>>>>>>> 32a9a03b74cee157fef83c6019aa996789791ece
 
 					{/* TABLE HEADERS */}
 					<Table className="expenseTable">
@@ -346,7 +424,11 @@ class ExpenseTable extends Component {
 					</div>
 					{/* //END SECTION FOR UPDATING ITEMS// */}
 				</div>
+<<<<<<< HEAD
 			)
+=======
+			);
+>>>>>>> 32a9a03b74cee157fef83c6019aa996789791ece
 		}
 
 		return (
