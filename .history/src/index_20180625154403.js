@@ -10,6 +10,7 @@ import App from './App';
 import rootSaga from './redux/sagas';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import firebase from 'firebase/app';
 
 // Initializing to an empty object, but here is where you could
 // preload your redux state with initial values (from localStorage, perhaps)
