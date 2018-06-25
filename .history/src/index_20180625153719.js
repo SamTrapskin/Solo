@@ -11,6 +11,7 @@ import rootSaga from './redux/sagas';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import firebase from 'firebase/app';
+import firebase from 'firebase/app'
 import firebase from 'firebase'
 
 // Initializing to an empty object, but here is where you could
