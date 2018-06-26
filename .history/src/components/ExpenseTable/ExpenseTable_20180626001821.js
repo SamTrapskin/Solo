@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Nav from '../../components/Nav/Nav';
-// import { USER_ACTIONS } from '../../redux/actions/userActions';
+import { USER_ACTIONS } from '../../redux/actions/userActions';
 import { triggerLogout } from '../../redux/actions/loginActions';
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import EditIcon from 'material-ui/svg-icons/image/edit';
@@ -69,7 +69,7 @@ class ExpenseTable extends Component {
 	//DOM
 	componentDidMount() {
 		const { id } = this.props.match.params;
-		// this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+		this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
 		this.props.dispatch({ type: 'GET_EXPENSE' });
 	}
 
@@ -194,8 +194,8 @@ class ExpenseTable extends Component {
 		console.log('HEY-oooo expense render state and props', this.state, this.props);
 		let content = null;
 		// const {AsrGxIEK3SGqjQA3OgxDXz}  = this.props;   FUTURE RELEASE
-		// if (this.props.user.userName) {
-		// 	const actions = [ <FlatButton label="Close" primary={true} onClick={this.handleCloseAlert} /> ];
+		if (this.props.user.userName) {
+			const actions = [ <FlatButton label="Close" primary={true} onClick={this.handleCloseAlert} /> ];
 
 			const editActions = [
 				<FlatButton label="Close" primary={true} onClick={this.handleClose} />,
@@ -284,7 +284,7 @@ class ExpenseTable extends Component {
 
 					<div>
 						<Dialog
-							// actions={actions}
+							actions={actions}
 							modal={false}
 							open={this.state.openAlert}
 							onRequestClose={this.handleClose}
@@ -346,7 +346,7 @@ class ExpenseTable extends Component {
 					{/* //END SECTION FOR UPDATING ITEMS// */}
 				</div>
 			)
-		// }
+		}
 
 		return (
 			<div>

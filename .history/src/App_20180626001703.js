@@ -11,8 +11,8 @@ import {
 } from 'react-router-dom';
 
 import Header from './components/Header/Header';
-// import LoginPage from './components/LoginPage/LoginPage';
-// import RegisterPage from './components/RegisterPage/RegisterPage';
+import LoginPage from './components/LoginPage/LoginPage';
+import RegisterPage from './components/RegisterPage/RegisterPage';
 import ExpenseTable from './components/ExpenseTable/ExpenseTable';
 import MileageTable from './components/MileageTable/MileageTable';
 
@@ -42,10 +42,10 @@ const App = () => (
           path="/mileage"
           component={MileageTable}
         />
-       {/* <Route
+       <Route
           path="/home"
           component={LoginPage}
-        /> */}
+        />
 
        </Switch> 
     </Router>

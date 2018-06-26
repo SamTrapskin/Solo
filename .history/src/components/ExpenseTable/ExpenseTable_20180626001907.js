@@ -284,7 +284,7 @@ class ExpenseTable extends Component {
 
 					<div>
 						<Dialog
-							// actions={actions}
+							actions={actions}
 							modal={false}
 							open={this.state.openAlert}
 							onRequestClose={this.handleClose}
@@ -346,7 +346,7 @@ class ExpenseTable extends Component {
 					{/* //END SECTION FOR UPDATING ITEMS// */}
 				</div>
 			)
-		// }
+		}
 
 		return (
 			<div>

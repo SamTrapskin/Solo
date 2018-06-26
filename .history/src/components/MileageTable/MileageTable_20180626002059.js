@@ -81,17 +81,17 @@ class MileageTable extends Component {
  
   componentDidMount() {
 		const { id } = this.props.match.params;
-		// this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
+		this.props.dispatch({ type: USER_ACTIONS.FETCH_USER });
 
     this.props.dispatch({type: 'GET_MILEAGE'})
 
   }
 
-  // componentDidUpdate() {
-  //   if (!this.props.user.isLoading && this.props.user.userName === null) {
-  //     this.props.history.push('home');
-  //   }
-  // }
+  componentDidUpdate() {
+    if (!this.props.user.isLoading && this.props.user.userName === null) {
+      this.props.history.push('home');
+    }
+  }
   logout = () => {
 		this.props.dispatch(triggerLogout());
 		// this.props.history.push('home');

@@ -87,11 +87,11 @@ class MileageTable extends Component {
 
   }
 
-  // componentDidUpdate() {
-  //   if (!this.props.user.isLoading && this.props.user.userName === null) {
-  //     this.props.history.push('home');
-  //   }
-  // }
+  componentDidUpdate() {
+    if (!this.props.user.isLoading && this.props.user.userName === null) {
+      this.props.history.push('home');
+    }
+  }
   logout = () => {
 		this.props.dispatch(triggerLogout());
 		// this.props.history.push('home');

@@ -18,21 +18,21 @@ const style = {
 
 const mapStateToProps = (state) => ({
 	user: state.user,
-	reduxState: state.getMileage
+	reduxState: state.getExpense
 });
 
-class MileageForm extends Component {
+class ExpenseForm extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			open: false,
-			getMileage: [],
+			getExpense: [],
 			currentRow: {},
 			openAlert: false,
 			actionType: '',
 			alertText: {
-				add: 'You have added mileage successfully!',
+				add: 'You have added a new expense successfully!',
 			}
         };
     }
@@ -79,9 +79,9 @@ class MileageForm extends Component {
             this.setState((prevState) => ({
                 currentRow: {
                     ...prevState.currentRow,
-                    travel_date: date
+                    purchase_date: date
                 },
-                travel_date: date,
+                purchase_date: date,
                 actionType: 'date'
             }));
         };
@@ -89,12 +89,12 @@ class MileageForm extends Component {
 
         //SUBMIT BUTTON- TRIGGERS DISPATCH TO EXPENSE SAGA TO ADD DATA
 	handleClick = () => {
-		console.log('add mileage', this.state);
+		console.log('add expense', this.state);
 		this.setState({
 			actionType: 'add'
 		});
 		this.props.dispatch({
-			type: 'ADD_MILEAGE',
+			type: 'ADD_EXPENSE',
 			payload: this.state
 		});
 		
@@ -110,7 +110,7 @@ class MileageForm extends Component {
     
 
     render() {
-        let totalMileageTraveled = 0;
+        let totalExpensePrice = 0;
             let content = null;
 
         //.MAP SEPARATES DATA INTO INDIVIDUAL ITEMS.
@@ -120,21 +120,21 @@ class MileageForm extends Component {
 		// 	const actions = [ <FlatButton label="Close" primary={true} onClick={this.handleCloseAlert} /> ];
         
             const tableRows = this.props.reduxState.map((row) => {
-                const { id, description, address, travel_date, total_miles } = row;
-				totalMileageTraveled += parseInt(total_miles);
+                const { id, item_description, purchase_date, item_price, item_link } = row;
+				totalExpensePrice += parseInt(item_price);
 		})
                 return (
                        <div>
-					   <form id="mileageForm">
+					   <form id="expenseForm">
 						<h3>
-							Add new <br />
-							trip
+							Add a new <br />
+							expense
 						</h3>
 						<TextField
 							inputStyle={{ color: 'whiteSmoke' }}
-							floatingLabelText="Trip description"
+							floatingLabelText="Item description"
 							floatingLabelStyle={{ color: 'whitesmoke' }}
-							onChange={this.handleChange('description')}
+							onChange={this.handleChange('item_description')}
 							hintStyle={{ color: 'whitesmoke' }}
 							inputStyle={{ textAlign: 'center', color: 'whitesmoke' }}
 						/>
@@ -143,22 +143,13 @@ class MileageForm extends Component {
 							name="desc"
 							placeholder="Item description"
 							onChange={this.handleChange('item_description')}
-                        /> */}
-                        <br />
-                        <TextField
-							inputStyle={{ color: 'whiteSmoke' }}
-							floatingLabelText="Trip address"
-							floatingLabelStyle={{ color: 'whitesmoke' }}
-							onChange={this.handleChange('address')}
-							hintStyle={{ color: 'whitesmoke' }}
-							inputStyle={{ textAlign: 'center', color: 'whitesmoke' }}
-						/>
+						/> */}
 
 						<br />
 						<br />
 
 						<DateSelect
-							hintText="Travel date"
+							hintText="Purchase date"
 							value={this.state.purchase_date}
 							onChange={this.handleDatePicker}
 						/>
@@ -168,19 +159,27 @@ class MileageForm extends Component {
 
 						<TextField
 							inputStyle={{ color: 'whiteSmoke' }}
-							floatingLabelText="Total Miles"
+							floatingLabelText="Item price"
 							floatingLabelStyle={{ color: 'whitesmoke' }}
-							onChange={this.handleChange('total_miles')}
+							onChange={this.handleChange('item_price')}
 							hintStyle={{ color: 'whitesmoke' }}
 							inputStyle={{ textAlign: 'center', color: 'whitesmoke' }}
 						/>
 
 						<br />
-						
+						<TextField
+							inputStyle={{ color: 'whiteSmoke' }}
+							floatingLabelText="Item link"
+							floatingLabelStyle={{ color: 'whitesmoke' }}
+							onChange={this.handleChange('item_link')}
+							hintStyle={{ color: 'whitesmoke' }}
+							inputStyle={{ textAlign: 'center', color: 'whitesmoke' }}
+						/>
+						<br />
 						
 						<RaisedButton
-								id="mileageSubmit"
-								label="Submit Mileage"
+								id="expSubmit"
+								label="Submit Expense"
 								primary={true}
 								style={style}
 								onClick={this.handleClick} 
@@ -188,9 +187,9 @@ class MileageForm extends Component {
                    
 
                         {/* END FORM */}
-                        <h3>Total Mileage</h3>
+                        <h3>Total Expenses</h3>
 
-                        <h1>{totalMileageTraveled}mi.</h1>
+                        <h1>${totalExpensePrice}</h1>
 
 					
                         </form>
@@ -200,7 +199,7 @@ class MileageForm extends Component {
                         </div>
                 )   
  
-            // }
+            }
 		
         
 
@@ -226,5 +225,5 @@ class MileageForm extends Component {
 }
 
 {/* // this allows us to use <App /> in index.js */}
-export default connect(mapStateToProps)(MileageForm);
+export default connect(mapStateToProps)(ExpenseForm);
 

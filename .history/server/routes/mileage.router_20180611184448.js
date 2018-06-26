@@ -23,6 +23,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res, next) => {
 	console.log('POST Route');
 	console.log(req.body);
+	if (req.isAuthenticated()) {
 		const queryText = 'INSERT INTO mileage ("description", "travel_date","address", "total_miles") VALUES ($1, $2, $3, $4);';
 		pool
 			.query(queryText, [req.body.description, req.body.travel_date, req.body.address, req.body.total_miles ])
@@ -33,7 +34,9 @@ router.post('/', (req, res, next) => {
 				console.log(err);
 				res.sendStatus(500);
 			});
-	 
+	} else {
+		res.sendStatus(403);
+	}
 });
 
 router.delete('/:id' , (req, res,next) => {

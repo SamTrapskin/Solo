@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-// import user from './userReducer';
-// import login from './loginReducer';
+import user from './userReducer';
+import login from './loginReducer';
 import expense from './expenseReducer'; 
 import getExpense from './getExpenseReducer';
 import mileage from './mileageReducer';  
