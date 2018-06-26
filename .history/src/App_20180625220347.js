@@ -23,10 +23,8 @@ const App = () => (
  </Header>
     <Router>
        <Switch>
-       <Redirect exact from="/" to="/home" />
-
         <Route
-          path="/home"
+          path="/login"
           component={LoginPage}
         /> 
         
@@ -42,10 +40,8 @@ const App = () => (
           path="/mileage"
           component={MileageTable}
         />
-       <Route
-          path="/home"
-          component={LoginPage}
-        />
+       OTHERWISE (no path!)
+        <Route render={() => <h1>404</h1>} />
 
        </Switch> 
     </Router>

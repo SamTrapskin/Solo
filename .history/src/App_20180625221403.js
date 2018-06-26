@@ -23,10 +23,8 @@ const App = () => (
  </Header>
     <Router>
        <Switch>
-       <Redirect exact from="/" to="/home" />
-
         <Route
-          path="/home"
+          path="/login"
           component={LoginPage}
         /> 
         

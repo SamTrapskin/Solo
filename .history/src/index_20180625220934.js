@@ -7,6 +7,7 @@ import logger from 'redux-logger';
 import reducer from './redux/reducers';
 import App from './App';
 import rootSaga from './redux/sagas';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // Initializing to an empty object, but here is where you could

@@ -23,10 +23,8 @@ const App = () => (
  </Header>
     <Router>
        <Switch>
-       <Redirect exact from="/" to="/home" />
-
         <Route
-          path="/home"
+          path="/login"
           component={LoginPage}
         /> 
         
@@ -43,8 +41,8 @@ const App = () => (
           component={MileageTable}
         />
        <Route
-          path="/home"
-          component={LoginPage}
+          path="/mileage"
+          component={MileageTable}
         />
 
        </Switch> 

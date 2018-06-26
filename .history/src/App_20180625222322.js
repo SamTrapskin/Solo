@@ -26,7 +26,7 @@ const App = () => (
        <Redirect exact from="/" to="/home" />
 
         <Route
-          path="/home"
+          path="/login"
           component={LoginPage}
         /> 
         
