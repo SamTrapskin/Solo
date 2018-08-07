@@ -11,9 +11,10 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
 import moment from 'moment';
-// import Alert from '../Alert/Alert';
 import PropTypes from 'prop-types';
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
+
+
 //STYLE VARIABLE FOR MATERIAL BUTTON
 const style = theme => ({
 	margin: 12,
@@ -93,6 +94,8 @@ class ExpenseTable extends Component {
 		};
 	};
 
+
+	// FUNCTION FOR CALLENDAR
 	handleDatePicker = (date) => {
 		date = moment(date).format('MM/DD/YYYY');
 		console.log('handling date change', date);
@@ -105,6 +108,8 @@ class ExpenseTable extends Component {
 			actionType: 'date'
 		}));
 	};
+// END CALENDAR //
+
 
 	//SUBMIT BUTTON- TRIGGERS DISPATCH TO EXPENSE SAGA TO ADD DATA
 	handleClick = () => {
@@ -139,6 +144,8 @@ class ExpenseTable extends Component {
 		});
 	};
 
+
+	// FUNCTION FOR EDITIG LINE ITEM
 	handleClickEdit = (event) => {
 		this.setState({
 			open: true,
